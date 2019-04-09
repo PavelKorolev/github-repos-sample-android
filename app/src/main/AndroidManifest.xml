@@ -1,13 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="xyz.pavelkorolev.githubrepos">
 
     <application
             android:name=".application.App"
-            android:allowBackup="true"
+            android:allowBackup="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+            android:supportsRtl="false"
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".modules.splash.SplashActivity">
             <intent-filter>
@@ -15,6 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".modules.main.MainActivity"/>
+        <activity android:name=".modules.repositorylist.RepositoryListActivity"/>
 
     </application>
 

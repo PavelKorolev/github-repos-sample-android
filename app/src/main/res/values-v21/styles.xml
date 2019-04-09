@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="MediumTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+</resources>

@@ -3,16 +3,40 @@ package xyz.pavelkorolev.githubrepos.modules.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import xyz.pavelkorolev.githubrepos.modules.base.BaseFragmentActivity
-import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListFragment
+import androidx.fragment.app.FragmentManager
+import xyz.pavelkorolev.githubrepos.R
+import xyz.pavelkorolev.githubrepos.helpers.app
+import xyz.pavelkorolev.githubrepos.modules.base.BaseActivity
+import xyz.pavelkorolev.githubrepos.services.Navigator
+import javax.inject.Inject
 
-class MainActivity : BaseFragmentActivity() {
+interface NavigationRoot {
+    val contentFragmentManager: FragmentManager
 
-    override fun rootFragment(): Fragment = RepositoryListFragment.instance()
+    fun finish()
+}
+
+class MainActivity : BaseActivity(), NavigationRoot {
+
+    private val component by lazy {
+        app.component.plus(MainModule(this))
+    }
+
+    @Inject
+    lateinit var navigator: Navigator
+
+    override val contentFragmentManager: FragmentManager
+        get() = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_fragment)
+        component.inject(this)
+        navigator.rootOrganization()
+    }
+
+    override fun onBackPressed() {
+        navigator.back()
     }
 
     companion object {

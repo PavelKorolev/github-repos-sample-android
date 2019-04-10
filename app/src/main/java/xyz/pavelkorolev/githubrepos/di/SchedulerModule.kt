@@ -10,4 +10,5 @@ class SchedulerModule {
 
     @Provides
     fun provideSchedulerProvider(): SchedulerProvider = AppSchedulerProvider()
+
 }

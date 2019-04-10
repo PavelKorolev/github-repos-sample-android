@@ -1,4 +1,4 @@
-package xyz.pavelkorolev.githubrepos.modules.repositorylist
+package xyz.pavelkorolev.githubrepos.modules.repositorylist.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,21 +8,23 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.R
-import xyz.pavelkorolev.githubrepos.helpers.addDisposableTo
-import xyz.pavelkorolev.githubrepos.helpers.app
-import xyz.pavelkorolev.githubrepos.helpers.find
-import xyz.pavelkorolev.githubrepos.helpers.instanceOf
+import xyz.pavelkorolev.githubrepos.helpers.*
 import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
 import xyz.pavelkorolev.githubrepos.modules.base.BaseIntent
 import xyz.pavelkorolev.githubrepos.modules.base.BaseView
 import xyz.pavelkorolev.githubrepos.modules.base.NavigationMode
+import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListViewModel
+import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListViewState
 import xyz.pavelkorolev.githubrepos.modules.repositorylist.di.RepositoryListModule
 import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import javax.inject.Inject
 
-sealed class RepositoryListIntent : BaseIntent
+sealed class RepositoryListIntent : BaseIntent {
+    object PullToRefresh : RepositoryListIntent()
+}
 
 class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, RepositoryListViewState> {
 
@@ -37,7 +39,10 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
     }
 
     private lateinit var recycler: RecyclerView
+    private lateinit var refresher: SwipeRefreshLayout
     private lateinit var emptyView: View
+
+    private val controller = RepositoryListController()
 
     private val component by lazy {
         app.component.plus(RepositoryListModule(this))
@@ -46,12 +51,10 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
     override fun findViews() {
         super.findViews()
         recycler = find(R.id.recycler)
+        refresher = find<SwipeRefreshLayout>(R.id.refresher).apply {
+            setColorSchemeResources(R.color.colorAccent)
+        }
         emptyView = find(R.id.empty_view)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -71,13 +74,22 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
             processIntents(intents())
         }
 
-        setupToolbar(R.string.repository_list, NavigationMode.NONE)
+        setupToolbar(R.string.repository_list, NavigationMode.BACK)
+
+        recycler.setAdapterFromController(controller)
+        recycler.addDefaultSeparators()
     }
 
-    override fun intents(): Observable<RepositoryListIntent> = Observable.empty()
+    override fun intents(): Observable<RepositoryListIntent> = Observable.mergeArray(
+        refresher.refreshes().map { RepositoryListIntent.PullToRefresh }
+    )
 
     override fun render(state: RepositoryListViewState) {
         emptyView.isVisible = state.repositoryList?.isEmpty() ?: false
+        refresher.isRefreshing = state.isLoading
+
+        controller.repositoryList = state.repositoryList
+        controller.requestModelBuild()
     }
 
     companion object {

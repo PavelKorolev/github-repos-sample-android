@@ -13,15 +13,29 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            def keystorePropertiesFile = rootProject.file('keystore.properties')
+            if (keystorePropertiesFile.exists()) {
+                Properties properties = new Properties()
+                properties.load(keystorePropertiesFile.newDataInputStream())
+                keyAlias properties.getProperty("keystore.alias")
+                keyPassword properties.getProperty("keystore.alias.password")
+                storeFile file(properties.getProperty("keystore.path"))
+                storePassword properties.getProperty("keystore.password")
+            }
         }
     }
-}
-
-android {
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard/app.pro',
+                    'proguard/okhttp3.pro',
+                    'proguard/retrofit2.pro'
+        }
+    }
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8

@@ -10,7 +10,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
-import xyz.pavelkorolev.githubrepos.entities.ServerRepository
+import xyz.pavelkorolev.githubrepos.entities.server.ServerRepository
 import java.util.concurrent.TimeUnit
 
 interface ApiService {

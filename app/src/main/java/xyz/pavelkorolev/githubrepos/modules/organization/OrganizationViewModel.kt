@@ -26,19 +26,10 @@ class OrganizationViewModel @Inject constructor(
 
     lateinit var router: OrganizationRouter
 
+    private val initialState = OrganizationViewState()
+
     init {
-        val initialState = OrganizationViewState()
-        actionSubject
-            .scan(initialState, ::reduce)
-            .subscribe(stateSubject)
-            .addDisposableTo(viewModelLifetime)
-    }
-
-    override fun processIntents(intents: Observable<OrganizationIntent>) {
-        super.processIntents(intents)
-
-        val intentsConnectable = intents
-            .publish()
+        val intentsConnectable = intentRelay.publish()
 
         val organizationTextChanges = intentsConnectable.ofType(OrganizationIntent.OrganizationTextChanges::class.java)
             .map { it.text }
@@ -53,17 +44,18 @@ class OrganizationViewModel @Inject constructor(
             .subscribe { organization ->
                 router.openRepositoryList(organization)
             }
-            .addDisposableTo(uiLifetime)
+            .addDisposableTo(disposable)
 
         Observable
             .mergeArray(
                 buttonEnableActions
             )
-            .subscribe(actionSubject)
-            .addDisposableTo(uiLifetime)
+            .scan(initialState, ::reduce)
+            .subscribe(stateRelay)
+            .addDisposableTo(disposable)
 
-        organizationTextChanges.connectInto(uiLifetime)
-        intentsConnectable.connectInto(uiLifetime)
+        organizationTextChanges.connectInto(disposable)
+        intentsConnectable.connectInto(disposable)
     }
 
     private fun reduce(state: OrganizationViewState, action: OrganizationAction): OrganizationViewState {

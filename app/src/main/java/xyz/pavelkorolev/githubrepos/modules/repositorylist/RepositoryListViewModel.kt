@@ -30,22 +30,16 @@ class RepositoryListViewModel @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel<RepositoryListIntent, RepositoryListAction, RepositoryListViewState>() {
 
+    private val initialState = RepositoryListViewState()
+
     init {
-        val initialState = RepositoryListViewState()
-        actionSubject
-            .scan(initialState, ::reduce)
-            .subscribe(stateSubject)
-            .addDisposableTo(viewModelLifetime)
-    }
-
-    override fun processIntents(intents: Observable<RepositoryListIntent>) {
-        super.processIntents(intents)
-
-        val intentsConnectable = intents.publish()
+        val intentsConnectable = intentRelay.publish()
 
         val initialData = intentsConnectable.ofType(RepositoryListIntent.InitialData::class.java)
+            .take(1)
 
-        val pullToRefreshes = intentsConnectable.ofType(RepositoryListIntent.PullToRefresh::class.java).map { Unit }
+        val pullToRefreshes = intentsConnectable.ofType(RepositoryListIntent.PullToRefresh::class.java)
+            .map { Unit }
 
         val startLoadIntents = initialData
             .map { it.organization }
@@ -67,10 +61,11 @@ class RepositoryListViewModel @Inject constructor(
             .mergeArray(
                 repositoryListUpdateActions
             )
-            .subscribe(actionSubject)
-            .addDisposableTo(uiLifetime)
+            .scan(initialState, ::reduce)
+            .subscribe(stateRelay)
+            .addDisposableTo(disposable)
 
-        intentsConnectable.connectInto(uiLifetime)
+        intentsConnectable.connectInto(disposable)
     }
 
     private fun reduce(state: RepositoryListViewState, action: RepositoryListAction): RepositoryListViewState {

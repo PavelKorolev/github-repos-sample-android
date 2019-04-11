@@ -9,13 +9,11 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding2.widget.editorActions
 import com.jakewharton.rxbinding2.widget.textChanges
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.R
-import xyz.pavelkorolev.githubrepos.helpers.addDisposableTo
-import xyz.pavelkorolev.githubrepos.helpers.app
-import xyz.pavelkorolev.githubrepos.helpers.find
-import xyz.pavelkorolev.githubrepos.helpers.instanceOf
+import xyz.pavelkorolev.githubrepos.helpers.*
 import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
 import xyz.pavelkorolev.githubrepos.modules.base.BaseIntent
 import xyz.pavelkorolev.githubrepos.modules.base.BaseView
@@ -82,6 +80,9 @@ class OrganizationFragment : BaseFragment(), BaseView<OrganizationIntent, Organi
 
     override fun intents(): Observable<OrganizationIntent> = Observable.mergeArray(
         editText.textChanges().map { OrganizationIntent.OrganizationTextChanges(it.toString()) },
+        editText.editorActions()
+            .doOnNext { hideKeyboard() }
+            .map { OrganizationIntent.Open },
         button.clicks().map { OrganizationIntent.Open }
     )
 

@@ -26,6 +26,8 @@ class RepositoryListViewModel @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel<RepositoryListIntent, RepositoryListAction, RepositoryListViewState>() {
 
+    lateinit var organization: String
+
     init {
         val initialState = RepositoryListViewState()
         actionSubject
@@ -44,7 +46,7 @@ class RepositoryListViewModel @Inject constructor(
         val repositoryListUpdateActions = pullToRefreshes
             .startWith(Unit)
             .switchMap {
-                interactor.loadRepositoryList("google")
+                interactor.loadRepositoryList(organization)
                     .subscribeOn(schedulerProvider.io())
                     .map<RepositoryListAction> { RepositoryListAction.UpdateRepositoryList(it) }
                     .startWith(RepositoryListAction.UpdateLoading(true))

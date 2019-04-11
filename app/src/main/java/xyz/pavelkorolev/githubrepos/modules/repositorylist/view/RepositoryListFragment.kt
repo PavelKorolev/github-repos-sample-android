@@ -48,6 +48,8 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
         app.component.plus(RepositoryListModule(this))
     }
 
+    private lateinit var organization: String
+
     override fun findViews() {
         super.findViews()
         recycler = find(R.id.recycler)
@@ -66,7 +68,9 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
+        assertNotNull(organization)
 
+        viewModel.organization = organization
         with(viewModel) {
             stateUpdatesOn(schedulerProvider.main())
                 .subscribe(::render)
@@ -74,7 +78,7 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
             processIntents(intents())
         }
 
-        setupToolbar(R.string.repository_list, NavigationMode.BACK)
+        setupToolbar(getString(R.string.repository_list, organization), NavigationMode.BACK)
 
         recycler.setAdapterFromController(controller)
         recycler.addDefaultSeparators()
@@ -93,7 +97,9 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
     }
 
     companion object {
-        fun instance() = instanceOf<RepositoryListFragment>()
+        fun instance(organization: String) = instanceOf<RepositoryListFragment>().apply {
+            this.organization = organization
+        }
     }
 
 }

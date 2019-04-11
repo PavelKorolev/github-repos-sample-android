@@ -93,7 +93,7 @@ class NavigatorImpl(
     }
 
     override fun pushRepositoryList(organization: String) {
-        val fragment = RepositoryListFragment.instance()
+        val fragment = RepositoryListFragment.instance(organization)
         push(fragment)
     }
 

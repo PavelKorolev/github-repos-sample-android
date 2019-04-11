@@ -7,7 +7,9 @@ import dagger.Provides
 import dagger.Subcomponent
 import dagger.multibindings.IntoMap
 import xyz.pavelkorolev.githubrepos.di.ViewModelKey
-import xyz.pavelkorolev.githubrepos.modules.organization.*
+import xyz.pavelkorolev.githubrepos.modules.organization.OrganizationRouter
+import xyz.pavelkorolev.githubrepos.modules.organization.OrganizationRouterImpl
+import xyz.pavelkorolev.githubrepos.modules.organization.OrganizationViewModel
 import xyz.pavelkorolev.githubrepos.modules.organization.view.OrganizationFragment
 import xyz.pavelkorolev.githubrepos.services.Navigator
 import xyz.pavelkorolev.githubrepos.services.NavigatorImpl
@@ -24,9 +26,6 @@ interface OrganizationComponent {
 
 @Module
 class OrganizationModule(private val fragment: OrganizationFragment) {
-
-    @Provides
-    fun provideInteractor(): OrganizationInteractor = OrganizationInteractorImpl()
 
     @Provides
     fun provideNavigator(): Navigator = NavigatorImpl(fragment.activity)

@@ -8,7 +8,6 @@ import xyz.pavelkorolev.githubrepos.modules.base.BaseAction
 import xyz.pavelkorolev.githubrepos.modules.base.BaseViewModel
 import xyz.pavelkorolev.githubrepos.modules.base.BaseViewState
 import xyz.pavelkorolev.githubrepos.modules.organization.view.OrganizationIntent
-import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import javax.inject.Inject
 
 data class OrganizationViewState(
@@ -19,10 +18,8 @@ sealed class OrganizationAction : BaseAction {
     data class UpdateButtonEnabled(val isEnabled: Boolean) : OrganizationAction()
 }
 
-class OrganizationViewModel @Inject constructor(
-    private val interactor: OrganizationInteractor,
-    private val schedulerProvider: SchedulerProvider
-) : BaseViewModel<OrganizationIntent, OrganizationAction, OrganizationViewState>() {
+class OrganizationViewModel @Inject constructor() :
+    BaseViewModel<OrganizationIntent, OrganizationAction, OrganizationViewState>() {
 
     lateinit var router: OrganizationRouter
 

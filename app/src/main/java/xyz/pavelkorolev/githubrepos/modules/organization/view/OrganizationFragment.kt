@@ -12,6 +12,7 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.editorActions
 import com.jakewharton.rxbinding2.widget.textChanges
 import io.reactivex.Observable
+import xyz.pavelkorolev.githubrepos.BuildConfig
 import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.helpers.*
 import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
@@ -35,7 +36,7 @@ class OrganizationFragment : BaseFragment(), BaseView<OrganizationIntent, Organi
     lateinit var schedulerProvider: SchedulerProvider
 
     @Inject
-    lateinit var organizationRouter: OrganizationRouter
+    lateinit var router: OrganizationRouter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -67,15 +68,15 @@ class OrganizationFragment : BaseFragment(), BaseView<OrganizationIntent, Organi
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
 
-        with(viewModel) {
-            this.router = organizationRouter
-            stateUpdatesOn(schedulerProvider.main())
-                .subscribe(::render)
-                .addDisposableTo(disposable)
-            processIntents(intents())
-        }
+        viewModel.router = router
+        viewModel.stateUpdatesOn(schedulerProvider.main())
+            .subscribe(::render)
+            .addDisposableTo(disposable)
+        viewModel.processIntents(intents())
 
-        editText.setText("google")
+        if (BuildConfig.DEBUG) {
+            editText.setText("google")
+        }
     }
 
     override fun intents(): Observable<OrganizationIntent> = Observable.mergeArray(

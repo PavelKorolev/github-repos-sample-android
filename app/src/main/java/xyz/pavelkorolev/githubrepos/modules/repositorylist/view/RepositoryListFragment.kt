@@ -85,12 +85,10 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
 
-        with(viewModel) {
-            stateUpdatesOn(schedulerProvider.main())
-                .subscribe(::render)
-                .addDisposableTo(disposable)
-            processIntents(intents())
-        }
+        viewModel.stateUpdatesOn(schedulerProvider.main())
+            .subscribe(::render)
+            .addDisposableTo(disposable)
+        viewModel.processIntents(intents())
 
         setupToolbar(getString(R.string.repository_list, organization), NavigationMode.BACK)
 

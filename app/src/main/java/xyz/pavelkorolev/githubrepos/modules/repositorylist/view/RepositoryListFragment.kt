@@ -1,9 +1,7 @@
 package xyz.pavelkorolev.githubrepos.modules.repositorylist.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -25,7 +23,7 @@ import xyz.pavelkorolev.githubrepos.modules.repositorylist.di.RepositoryListModu
 import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import javax.inject.Inject
 
-const val ORGANIZATION_KEY = "organization"
+private const val ORGANIZATION_KEY = "organization"
 
 sealed class RepositoryListIntent : BaseIntent {
     data class InitialData(
@@ -75,11 +73,7 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
         organization = getArgumentString(ORGANIZATION_KEY)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_repository_list, container, false)
+    override fun layoutResource() = R.layout.fragment_repository_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

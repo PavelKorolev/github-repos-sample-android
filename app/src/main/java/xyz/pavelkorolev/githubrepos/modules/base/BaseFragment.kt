@@ -1,9 +1,7 @@
 package xyz.pavelkorolev.githubrepos.modules.base
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
+import android.view.*
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
@@ -35,7 +33,15 @@ abstract class BaseFragment : Fragment() {
 
     open fun loadArguments() = Unit
 
+    abstract fun layoutResource(): Int
+
     open fun findViews() = Unit
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(layoutResource(), container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

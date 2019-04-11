@@ -1,9 +1,7 @@
 package xyz.pavelkorolev.githubrepos.modules.organization.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
@@ -49,8 +47,8 @@ class OrganizationFragment : BaseFragment(), BaseView<OrganizationIntent, Organi
         app.component.plus(OrganizationModule(this))
     }
 
-    lateinit var button: Button
-    lateinit var editText: EditText
+    private lateinit var button: Button
+    private lateinit var editText: EditText
 
     override fun findViews() {
         super.findViews()
@@ -58,11 +56,7 @@ class OrganizationFragment : BaseFragment(), BaseView<OrganizationIntent, Organi
         editText = find(R.id.edit_text)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_organization, container, false)
+    override fun layoutResource() = R.layout.fragment_organization
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

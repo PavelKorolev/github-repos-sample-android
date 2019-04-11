@@ -13,6 +13,8 @@ import retrofit2.http.Path
 import xyz.pavelkorolev.githubrepos.entities.server.ServerRepository
 import java.util.concurrent.TimeUnit
 
+private const val BASE_URL: String = "https://api.github.com"
+
 interface ApiService {
     fun getRepositories(organization: String): Observable<List<ServerRepository>>
 }
@@ -42,7 +44,7 @@ class ApiServiceImpl(private val debug: Boolean) : ApiService {
             .build()
 
         Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)
@@ -55,10 +57,6 @@ class ApiServiceImpl(private val debug: Boolean) : ApiService {
 
     override fun getRepositories(organization: String): Observable<List<ServerRepository>> =
         api.getRepositories(organization)
-
-    companion object {
-        private const val baseUrl: String = "https://api.github.com"
-    }
 
 }
 

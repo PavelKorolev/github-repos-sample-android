@@ -5,6 +5,7 @@ import xyz.pavelkorolev.githubrepos.entities.ErrorState
 import xyz.pavelkorolev.githubrepos.entities.Repository
 import xyz.pavelkorolev.githubrepos.helpers.addDisposableTo
 import xyz.pavelkorolev.githubrepos.helpers.connectInto
+import xyz.pavelkorolev.githubrepos.helpers.mapToLatestFrom
 import xyz.pavelkorolev.githubrepos.modules.base.BaseAction
 import xyz.pavelkorolev.githubrepos.modules.base.BaseViewModel
 import xyz.pavelkorolev.githubrepos.modules.base.BaseViewState
@@ -29,8 +30,6 @@ class RepositoryListViewModel @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel<RepositoryListIntent, RepositoryListAction, RepositoryListViewState>() {
 
-    lateinit var organization: String
-
     init {
         val initialState = RepositoryListViewState()
         actionSubject
@@ -44,11 +43,19 @@ class RepositoryListViewModel @Inject constructor(
 
         val intentsConnectable = intents.publish()
 
+        val initialData = intentsConnectable.ofType(RepositoryListIntent.InitialData::class.java)
+
         val pullToRefreshes = intentsConnectable.ofType(RepositoryListIntent.PullToRefresh::class.java).map { Unit }
 
-        val repositoryListUpdateActions = pullToRefreshes
-            .startWith(Unit)
-            .switchMap {
+        val startLoadIntents = initialData
+            .map { it.organization }
+
+        val repositoryListUpdateActions = Observable
+            .mergeArray(
+                startLoadIntents,
+                pullToRefreshes.mapToLatestFrom(startLoadIntents)
+            )
+            .switchMap { organization ->
                 interactor.loadRepositoryList(organization)
                     .subscribeOn(schedulerProvider.io())
                     .map<RepositoryListAction> { RepositoryListAction.UpdateRepositoryList(it) }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -27,6 +28,10 @@ import javax.inject.Inject
 const val ORGANIZATION_KEY = "organization"
 
 sealed class RepositoryListIntent : BaseIntent {
+    data class InitialData(
+        val organization: String
+    ) : RepositoryListIntent()
+
     object PullToRefresh : RepositoryListIntent()
 }
 
@@ -80,7 +85,6 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
 
-        viewModel.organization = organization
         with(viewModel) {
             stateUpdatesOn(schedulerProvider.main())
                 .subscribe(::render)
@@ -95,6 +99,7 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
     }
 
     override fun intents(): Observable<RepositoryListIntent> = Observable.mergeArray(
+        Observable.just(RepositoryListIntent.InitialData(organization)),
         refresher.refreshes().map { RepositoryListIntent.PullToRefresh }
     )
 
@@ -115,9 +120,9 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
 
     companion object {
         fun instance(organization: String) = instanceOf<RepositoryListFragment>().apply {
-            arguments = Bundle().apply {
-                putString(ORGANIZATION_KEY, organization)
-            }
+            arguments = bundleOf(
+                ORGANIZATION_KEY to organization
+            )
         }
     }
 

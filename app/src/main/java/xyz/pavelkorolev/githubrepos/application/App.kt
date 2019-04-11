@@ -6,8 +6,13 @@ import xyz.pavelkorolev.githubrepos.di.AppComponent
 import xyz.pavelkorolev.githubrepos.di.DaggerAppComponent
 import xyz.pavelkorolev.githubrepos.di.SchedulerModule
 import xyz.pavelkorolev.githubrepos.di.ServiceModule
+import xyz.pavelkorolev.githubrepos.services.LoggingService
+import javax.inject.Inject
 
 class App : Application() {
+
+    @Inject
+    lateinit var loggingService: LoggingService
 
     val component: AppComponent by lazy {
         DaggerAppComponent.builder()
@@ -20,6 +25,7 @@ class App : Application() {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         super.onCreate()
         component.inject(this)
+        loggingService.setup()
     }
 
 }

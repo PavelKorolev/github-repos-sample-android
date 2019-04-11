@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 
+@Suppress("OverridingDeprecatedMember", "DEPRECATION")
 class FitsSystemWindowsFrameLayout : FrameLayout {
 
     private val windowInsets = Rect()

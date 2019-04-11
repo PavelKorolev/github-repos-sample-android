@@ -53,12 +53,12 @@ class ApiServiceImpl(private val debug: Boolean) : ApiService {
         retrofit.create(GithubApi::class.java)
     }
 
+    override fun getRepositories(organization: String): Observable<List<ServerRepository>> =
+        api.getRepositories(organization)
+
     companion object {
         private const val baseUrl: String = "https://api.github.com"
     }
-
-    override fun getRepositories(organization: String): Observable<List<ServerRepository>> =
-        api.getRepositories(organization)
 
 }
 

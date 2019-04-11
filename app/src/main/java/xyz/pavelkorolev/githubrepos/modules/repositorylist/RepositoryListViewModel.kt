@@ -1,6 +1,7 @@
 package xyz.pavelkorolev.githubrepos.modules.repositorylist
 
 import io.reactivex.Observable
+import xyz.pavelkorolev.githubrepos.entities.ErrorState
 import xyz.pavelkorolev.githubrepos.entities.Repository
 import xyz.pavelkorolev.githubrepos.helpers.addDisposableTo
 import xyz.pavelkorolev.githubrepos.helpers.connectInto
@@ -13,12 +14,14 @@ import javax.inject.Inject
 
 data class RepositoryListViewState(
     val repositoryList: List<Repository>? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val errorState: ErrorState = ErrorState.None
 ) : BaseViewState
 
 sealed class RepositoryListAction : BaseAction {
     data class UpdateRepositoryList(val repositoryList: List<Repository>) : RepositoryListAction()
     data class UpdateLoading(val isLoading: Boolean) : RepositoryListAction()
+    data class UpdateErrorState(val errorState: ErrorState) : RepositoryListAction()
 }
 
 class RepositoryListViewModel @Inject constructor(
@@ -49,6 +52,7 @@ class RepositoryListViewModel @Inject constructor(
                 interactor.loadRepositoryList(organization)
                     .subscribeOn(schedulerProvider.io())
                     .map<RepositoryListAction> { RepositoryListAction.UpdateRepositoryList(it) }
+                    .onErrorReturn { RepositoryListAction.UpdateErrorState(ErrorState.Message("Loading Error")) }
                     .startWith(RepositoryListAction.UpdateLoading(true))
             }
 
@@ -70,6 +74,10 @@ class RepositoryListViewModel @Inject constructor(
             )
             is RepositoryListAction.UpdateLoading -> state.copy(
                 isLoading = action.isLoading
+            )
+            is RepositoryListAction.UpdateErrorState -> state.copy(
+                errorState = action.errorState,
+                isLoading = false
             )
         }
     }

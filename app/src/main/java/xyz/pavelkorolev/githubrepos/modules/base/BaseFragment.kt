@@ -33,6 +33,8 @@ abstract class BaseFragment : Fragment() {
     private var titleTextView: TextView? = null
     private var subtitleTextView: TextView? = null
 
+    open fun loadArguments() = Unit
+
     open fun findViews() = Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,6 +44,7 @@ abstract class BaseFragment : Fragment() {
         subtitleTextView = view.findViewById(R.id.toolbar_subtitle) as? TextView
         setSupportToolbar(toolbar)
         setHasOptionsMenu(true)
+        loadArguments()
         findViews()
     }
 

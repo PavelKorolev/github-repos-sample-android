@@ -42,6 +42,13 @@
                     android:text="@string/repository_list_empty"
                     android:visibility="gone"/>
 
+            <TextView
+                    android:id="@+id/error_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"/>
+
         </RelativeLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

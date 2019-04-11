@@ -15,3 +15,8 @@ inline fun FragmentManager.transaction(action: FragmentTransaction.() -> Fragmen
 }
 
 inline fun <reified T : View> Fragment.find(id: Int): T = view?.findViewById(id) as T
+
+class ArgumentException(override val message: String) : IllegalStateException(message)
+
+fun Fragment.getArgumentString(key: String): String =
+    arguments?.getString(key) ?: throw  ArgumentException("Argument $key must not be null")

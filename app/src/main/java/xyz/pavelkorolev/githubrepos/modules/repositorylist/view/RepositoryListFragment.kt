@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.R
+import xyz.pavelkorolev.githubrepos.entities.ErrorState
 import xyz.pavelkorolev.githubrepos.helpers.*
 import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
 import xyz.pavelkorolev.githubrepos.modules.base.BaseIntent
@@ -21,6 +23,8 @@ import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListViewSta
 import xyz.pavelkorolev.githubrepos.modules.repositorylist.di.RepositoryListModule
 import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import javax.inject.Inject
+
+const val ORGANIZATION_KEY = "organization"
 
 sealed class RepositoryListIntent : BaseIntent {
     object PullToRefresh : RepositoryListIntent()
@@ -41,6 +45,7 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
     private lateinit var recycler: RecyclerView
     private lateinit var refresher: SwipeRefreshLayout
     private lateinit var emptyView: View
+    private lateinit var errorTextView: TextView
 
     private val controller = RepositoryListController()
 
@@ -57,6 +62,12 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
             setColorSchemeResources(R.color.colorAccent)
         }
         emptyView = find(R.id.empty_view)
+        errorTextView = find(R.id.error_text_view)
+    }
+
+    override fun loadArguments() {
+        super.loadArguments()
+        organization = getArgumentString(ORGANIZATION_KEY)
     }
 
     override fun onCreateView(
@@ -68,7 +79,6 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
-        assertNotNull(organization)
 
         viewModel.organization = organization
         with(viewModel) {
@@ -90,6 +100,13 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
 
     override fun render(state: RepositoryListViewState) {
         emptyView.isVisible = state.repositoryList?.isEmpty() ?: false
+        when (state.errorState) {
+            is ErrorState.Message -> {
+                errorTextView.text = state.errorState.text
+                errorTextView.isVisible = true
+            }
+            is ErrorState.None -> errorTextView.isVisible = false
+        }
         refresher.isRefreshing = state.isLoading
 
         controller.repositoryList = state.repositoryList
@@ -98,7 +115,9 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
 
     companion object {
         fun instance(organization: String) = instanceOf<RepositoryListFragment>().apply {
-            this.organization = organization
+            arguments = Bundle().apply {
+                putString(ORGANIZATION_KEY, organization)
+            }
         }
     }
 

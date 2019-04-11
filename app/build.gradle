@@ -10,7 +10,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -19,14 +19,17 @@ android {
             if (keystorePropertiesFile.exists()) {
                 Properties properties = new Properties()
                 properties.load(keystorePropertiesFile.newDataInputStream())
-                keyAlias properties.getProperty("keystore.alias")
-                keyPassword properties.getProperty("keystore.alias.password")
                 storeFile file(properties.getProperty("keystore.path"))
                 storePassword properties.getProperty("keystore.password")
+                keyAlias properties.getProperty("keystore.alias")
+                keyPassword properties.getProperty("keystore.alias.password")
             }
         }
     }
     buildTypes {
+        debug {
+            versionNameSuffix "-debug"
+        }
         release {
             signingConfig signingConfigs.release
             minifyEnabled true

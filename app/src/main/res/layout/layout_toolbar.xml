@@ -9,6 +9,7 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_large"
             android:orientation="vertical">
 
         <TextView
@@ -16,7 +17,7 @@
                 style="@style/MediumTextAppearance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
+                android:singleLine="true"
                 android:textColor="@color/toolbar_tint"
                 android:textSize="@dimen/toolbar_title"/>
 
@@ -24,7 +25,7 @@
                 android:id="@+id/toolbar_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
+                android:singleLine="true"
                 android:textColor="@color/toolbar_tint"
                 android:textSize="@dimen/toolbar_subtitle"/>
 

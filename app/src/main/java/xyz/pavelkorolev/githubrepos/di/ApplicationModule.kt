@@ -4,18 +4,18 @@ import dagger.Component
 import dagger.Module
 import dagger.Provides
 import xyz.pavelkorolev.githubrepos.application.App
-import xyz.pavelkorolev.githubrepos.modules.base.BaseActivity
-import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
-import xyz.pavelkorolev.githubrepos.modules.contributorlist.di.ContributorListComponent
-import xyz.pavelkorolev.githubrepos.modules.contributorlist.di.ContributorListModule
-import xyz.pavelkorolev.githubrepos.modules.main.MainComponent
-import xyz.pavelkorolev.githubrepos.modules.main.MainModule
-import xyz.pavelkorolev.githubrepos.modules.organization.di.OrganizationComponent
-import xyz.pavelkorolev.githubrepos.modules.organization.di.OrganizationModule
-import xyz.pavelkorolev.githubrepos.modules.repositorylist.di.RepositoryListComponent
-import xyz.pavelkorolev.githubrepos.modules.repositorylist.di.RepositoryListModule
-import xyz.pavelkorolev.githubrepos.modules.splash.SplashComponent
-import xyz.pavelkorolev.githubrepos.modules.splash.SplashModule
+import xyz.pavelkorolev.githubrepos.ui.base.BaseActivity
+import xyz.pavelkorolev.githubrepos.ui.base.BaseFragment
+import xyz.pavelkorolev.githubrepos.ui.contributorlist.di.ContributorListComponent
+import xyz.pavelkorolev.githubrepos.ui.contributorlist.di.ContributorListModule
+import xyz.pavelkorolev.githubrepos.ui.main.MainComponent
+import xyz.pavelkorolev.githubrepos.ui.main.MainModule
+import xyz.pavelkorolev.githubrepos.ui.organization.di.OrganizationComponent
+import xyz.pavelkorolev.githubrepos.ui.organization.di.OrganizationModule
+import xyz.pavelkorolev.githubrepos.ui.repositorylist.di.RepositoryListComponent
+import xyz.pavelkorolev.githubrepos.ui.repositorylist.di.RepositoryListModule
+import xyz.pavelkorolev.githubrepos.ui.splash.SplashComponent
+import xyz.pavelkorolev.githubrepos.ui.splash.SplashModule
 import javax.inject.Singleton
 
 @Singleton

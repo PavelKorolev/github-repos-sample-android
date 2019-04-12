@@ -1,7 +1,7 @@
 package xyz.pavelkorolev.githubrepos.application
 
 import android.app.Activity
-import xyz.pavelkorolev.githubrepos.modules.main.MainActivity
+import xyz.pavelkorolev.githubrepos.ui.main.MainActivity
 
 interface RouterInput {
     fun start()

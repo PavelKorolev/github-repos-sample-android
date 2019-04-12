@@ -4,14 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.FragmentManager
-import xyz.pavelkorolev.githubrepos.helpers.hideKeyboard
-import xyz.pavelkorolev.githubrepos.helpers.transaction
-import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
-import xyz.pavelkorolev.githubrepos.modules.contributorlist.view.ContributorListFragment
-import xyz.pavelkorolev.githubrepos.modules.main.MainActivity
-import xyz.pavelkorolev.githubrepos.modules.main.NavigationRoot
-import xyz.pavelkorolev.githubrepos.modules.organization.view.OrganizationFragment
-import xyz.pavelkorolev.githubrepos.modules.repositorylist.view.RepositoryListFragment
+import xyz.pavelkorolev.githubrepos.utils.hideKeyboard
+import xyz.pavelkorolev.githubrepos.utils.transaction
+import xyz.pavelkorolev.githubrepos.ui.base.BaseFragment
+import xyz.pavelkorolev.githubrepos.ui.contributorlist.view.ContributorListFragment
+import xyz.pavelkorolev.githubrepos.ui.main.MainActivity
+import xyz.pavelkorolev.githubrepos.ui.main.NavigationRoot
+import xyz.pavelkorolev.githubrepos.ui.organization.view.OrganizationFragment
+import xyz.pavelkorolev.githubrepos.ui.repositorylist.view.RepositoryListFragment
 
 
 interface Navigator {

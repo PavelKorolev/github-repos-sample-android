@@ -2,6 +2,7 @@ package xyz.pavelkorolev.githubrepos.modules.organization
 
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.helpers.addDisposableTo
+import xyz.pavelkorolev.githubrepos.helpers.buttonThrottle
 import xyz.pavelkorolev.githubrepos.helpers.connectInto
 import xyz.pavelkorolev.githubrepos.helpers.mapToLatestFrom
 import xyz.pavelkorolev.githubrepos.modules.base.BaseAction
@@ -38,6 +39,7 @@ class OrganizationViewModel @Inject constructor() :
 
         intentsConnectable.ofType(OrganizationIntent.Open::class.java)
             .mapToLatestFrom(organizationTextChanges)
+            .buttonThrottle()
             .subscribe { organization ->
                 router.openRepositoryList(organization)
             }

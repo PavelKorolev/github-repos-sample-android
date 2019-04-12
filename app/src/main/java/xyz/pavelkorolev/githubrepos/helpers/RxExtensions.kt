@@ -32,9 +32,6 @@ fun <T> Observable<T>.buttonThrottle(): Observable<T> =
 fun <T> Observable<T>.debounceText(): Observable<T> =
         this.debounce(200, TimeUnit.MILLISECONDS)
 
-fun <T> Observable<T>.routeThrottle(): Observable<T> =
-        this.throttleFirst(500, TimeUnit.MILLISECONDS)
-
 fun <T> Observable<T>.debugDelay(): Observable<T> = Observable.just(Unit)
         .delay(300, TimeUnit.MILLISECONDS)
         .flatMap { this }

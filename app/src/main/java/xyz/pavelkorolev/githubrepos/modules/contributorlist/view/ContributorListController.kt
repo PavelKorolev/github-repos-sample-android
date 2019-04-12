@@ -1,6 +1,7 @@
 package xyz.pavelkorolev.githubrepos.modules.contributorlist.view
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import com.airbnb.epoxy.EpoxyController
@@ -8,21 +9,25 @@ import com.airbnb.epoxy.EpoxyHolder
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.entities.User
+import xyz.pavelkorolev.githubrepos.services.ImageLoader
 
-class ContributorListController : EpoxyController() {
+class ContributorListController(private val imageLoader: ImageLoader) : EpoxyController() {
 
     var contributorList: List<User>? = null
 
     override fun buildModels() {
         val contributorList = contributorList ?: return
         for (contributor in contributorList) {
-            ContributorListItemModel(contributor).addTo(this)
+            ContributorListItemModel(contributor, imageLoader).addTo(this)
         }
     }
 
 }
 
-class ContributorListItemModel(private val contributor: User) :
+class ContributorListItemModel(
+    private val contributor: User,
+    private val imageLoader: ImageLoader
+) :
     EpoxyModelWithHolder<ContributorListItemModel.ViewHolder>() {
 
     init {
@@ -34,6 +39,7 @@ class ContributorListItemModel(private val contributor: User) :
 
     override fun bind(holder: ViewHolder) {
         holder.textView.text = contributor.login
+        imageLoader.loadCircleAvatar(holder.avatarImageView, contributor.avatarUrl)
     }
 
     override fun createNewHolder() = ViewHolder()
@@ -58,11 +64,13 @@ class ContributorListItemModel(private val contributor: User) :
 
     class ViewHolder : EpoxyHolder() {
         lateinit var textView: TextView
+        lateinit var avatarImageView: ImageView
         lateinit var rootView: View
 
         override fun bindView(view: View) {
             rootView = view
             textView = view.findViewById(R.id.title_text_view)
+            avatarImageView = view.findViewById(R.id.avatar_image_view)
         }
     }
 

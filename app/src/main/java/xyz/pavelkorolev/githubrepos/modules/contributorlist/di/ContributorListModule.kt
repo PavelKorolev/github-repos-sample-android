@@ -10,8 +10,10 @@ import xyz.pavelkorolev.githubrepos.di.ViewModelKey
 import xyz.pavelkorolev.githubrepos.modules.contributorlist.ContributorListInteractor
 import xyz.pavelkorolev.githubrepos.modules.contributorlist.ContributorListInteractorImpl
 import xyz.pavelkorolev.githubrepos.modules.contributorlist.ContributorListViewModel
+import xyz.pavelkorolev.githubrepos.modules.contributorlist.view.ContributorListController
 import xyz.pavelkorolev.githubrepos.modules.contributorlist.view.ContributorListFragment
 import xyz.pavelkorolev.githubrepos.services.ApiService
+import xyz.pavelkorolev.githubrepos.services.ImageLoader
 
 @Subcomponent(
     modules = [
@@ -28,6 +30,9 @@ class ContributorListModule(private val fragment: ContributorListFragment) {
 
     @Provides
     fun provideInteractor(apiService: ApiService): ContributorListInteractor = ContributorListInteractorImpl(apiService)
+
+    @Provides
+    fun provideController(imageLoader: ImageLoader): ContributorListController = ContributorListController(imageLoader)
 
 }
 

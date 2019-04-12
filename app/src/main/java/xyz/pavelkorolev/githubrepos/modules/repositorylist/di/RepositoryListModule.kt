@@ -8,6 +8,7 @@ import dagger.Subcomponent
 import dagger.multibindings.IntoMap
 import xyz.pavelkorolev.githubrepos.di.ViewModelKey
 import xyz.pavelkorolev.githubrepos.modules.repositorylist.*
+import xyz.pavelkorolev.githubrepos.modules.repositorylist.view.RepositoryListController
 import xyz.pavelkorolev.githubrepos.modules.repositorylist.view.RepositoryListFragment
 import xyz.pavelkorolev.githubrepos.services.ApiService
 import xyz.pavelkorolev.githubrepos.services.Navigator
@@ -25,6 +26,9 @@ interface RepositoryListComponent {
 
 @Module
 class RepositoryListModule(private val fragment: RepositoryListFragment) {
+
+    @Provides
+    fun provideController(): RepositoryListController = RepositoryListController()
 
     @Provides
     fun provideInteractor(apiService: ApiService): RepositoryListInteractor = RepositoryListInteractorImpl(apiService)

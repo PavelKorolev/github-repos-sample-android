@@ -45,6 +45,9 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
     lateinit var schedulerProvider: SchedulerProvider
 
     @Inject
+    lateinit var controller: RepositoryListController
+
+    @Inject
     lateinit var router: RepositoryListRouter
 
     @Inject
@@ -58,8 +61,6 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
     private lateinit var refresher: SwipeRefreshLayout
     private lateinit var emptyView: View
     private lateinit var errorTextView: TextView
-
-    private val controller = RepositoryListController()
 
     private val component by lazy {
         app.component.plus(RepositoryListModule(this))

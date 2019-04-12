@@ -84,7 +84,8 @@ class RepositoryListViewModel @Inject constructor(
         return when (action) {
             is RepositoryListAction.UpdateRepositoryList -> state.copy(
                 repositoryList = action.repositoryList,
-                isLoading = false
+                isLoading = false,
+                errorState = ErrorState.None
             )
             is RepositoryListAction.UpdateLoading -> state.copy(
                 isLoading = action.isLoading

@@ -16,7 +16,8 @@ class ContributorListInteractorImpl(private val apiService: ApiService) : Contri
                 serverContributorList.map {
                     val id = it.id ?: throw RuntimeException("Server user must have id")
                     val login = it.login ?: throw RuntimeException("Server user must have login")
-                    User(id, login)
+                    val avatarUrl = it.avatar_url
+                    User(id, login, avatarUrl)
                 }
             }
 

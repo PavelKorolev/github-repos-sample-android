@@ -71,7 +71,8 @@ class ContributorListViewModel @Inject constructor(
         return when (action) {
             is ContributorListAction.UpdateContributorList -> state.copy(
                 contributorList = action.contributorList,
-                isLoading = false
+                isLoading = false,
+                errorState = ErrorState.None
             )
             is ContributorListAction.UpdateLoading -> state.copy(
                 isLoading = action.isLoading

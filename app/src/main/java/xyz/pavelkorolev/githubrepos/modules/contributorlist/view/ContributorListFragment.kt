@@ -41,6 +41,9 @@ class ContributorListFragment : BaseFragment(), BaseView<ContributorListIntent, 
     lateinit var schedulerProvider: SchedulerProvider
 
     @Inject
+    lateinit var controller: ContributorListController
+
+    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by lazy {
@@ -51,8 +54,6 @@ class ContributorListFragment : BaseFragment(), BaseView<ContributorListIntent, 
     private lateinit var refresher: SwipeRefreshLayout
     private lateinit var emptyView: View
     private lateinit var errorTextView: TextView
-
-    private val controller = ContributorListController()
 
     private val component by lazy {
         app.component.plus(ContributorListModule(this))

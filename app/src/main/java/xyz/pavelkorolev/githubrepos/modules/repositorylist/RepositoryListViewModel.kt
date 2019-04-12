@@ -30,6 +30,8 @@ class RepositoryListViewModel @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel<RepositoryListIntent, RepositoryListAction, RepositoryListViewState>() {
 
+    lateinit var router: RepositoryListRouter
+
     private val initialState = RepositoryListViewState()
 
     init {
@@ -56,6 +58,12 @@ class RepositoryListViewModel @Inject constructor(
                     .onErrorReturn { RepositoryListAction.UpdateErrorState(ErrorState.Message("Loading Error")) }
                     .startWith(RepositoryListAction.UpdateLoading(true))
             }
+
+        intentsConnectable.ofType(RepositoryListIntent.RepositoryClick::class.java)
+            .subscribe {
+                router.openUrl(it.repository.url)
+            }
+            .addDisposableTo(disposable)
 
         Observable
             .mergeArray(

@@ -1,8 +1,9 @@
 package xyz.pavelkorolev.githubrepos.services
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.FragmentManager
-import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.helpers.hideKeyboard
 import xyz.pavelkorolev.githubrepos.helpers.transaction
 import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
@@ -11,12 +12,15 @@ import xyz.pavelkorolev.githubrepos.modules.main.NavigationRoot
 import xyz.pavelkorolev.githubrepos.modules.organization.view.OrganizationFragment
 import xyz.pavelkorolev.githubrepos.modules.repositorylist.view.RepositoryListFragment
 
+
 interface Navigator {
     fun back(force: Boolean = false)
 
     fun openMain()
     fun rootOrganization()
     fun pushRepositoryList(organization: String)
+
+    fun openUrl(url: String)
 }
 
 class NavigatorImpl(
@@ -35,7 +39,7 @@ class NavigatorImpl(
         hideKeyboard()
         popAll()
         fragmentManager?.transaction {
-            replace(R.id.fragment_container, fragment)
+            replace(xyz.pavelkorolev.githubrepos.R.id.fragment_container, fragment)
             addToBackStack(null)
         }
     }
@@ -44,12 +48,12 @@ class NavigatorImpl(
         hideKeyboard()
         fragmentManager?.transaction {
             setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-                R.anim.enter_from_left,
-                R.anim.exit_to_right
+                xyz.pavelkorolev.githubrepos.R.anim.enter_from_right,
+                xyz.pavelkorolev.githubrepos.R.anim.exit_to_left,
+                xyz.pavelkorolev.githubrepos.R.anim.enter_from_left,
+                xyz.pavelkorolev.githubrepos.R.anim.exit_to_right
             )
-            add(R.id.fragment_container, fragment)
+            add(xyz.pavelkorolev.githubrepos.R.id.fragment_container, fragment)
             addToBackStack(null)
         }
     }
@@ -95,6 +99,11 @@ class NavigatorImpl(
     override fun pushRepositoryList(organization: String) {
         val fragment = RepositoryListFragment.instance(organization)
         push(fragment)
+    }
+
+    override fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        context?.startActivity(intent)
     }
 
 }

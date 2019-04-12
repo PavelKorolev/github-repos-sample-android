@@ -86,11 +86,11 @@ abstract class BaseFragment : Fragment() {
 
         when (navigationMode) {
             NavigationMode.MENU -> {
-                iconResource = R.drawable.menu
+                iconResource = R.drawable.ic_menu
                 listenerFunction = ::onNavigationMenuClick
             }
             NavigationMode.BACK -> {
-                iconResource = R.drawable.arrow_left
+                iconResource = R.drawable.ic_arrow_left
                 listenerFunction = ::onNavigationBackClick
             }
             NavigationMode.NONE -> return

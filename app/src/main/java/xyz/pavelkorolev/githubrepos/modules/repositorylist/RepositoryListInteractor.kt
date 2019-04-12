@@ -2,6 +2,7 @@ package xyz.pavelkorolev.githubrepos.modules.repositorylist
 
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.entities.Repository
+import xyz.pavelkorolev.githubrepos.helpers.logErrors
 import xyz.pavelkorolev.githubrepos.services.ApiService
 
 interface RepositoryListInteractor {
@@ -14,9 +15,13 @@ class RepositoryListInteractorImpl(private val apiService: ApiService) : Reposit
         apiService.getRepositories(organization)
             .map { serverRepositoryList ->
                 serverRepositoryList.map {
-                    val name = it.name ?: throw RuntimeException("Server repository must have title")
-                    Repository(name)
+                    val id = it.id ?: throw RuntimeException("Server repository must have id")
+                    val title = it.name ?: throw RuntimeException("Server repository must have title")
+                    val url = it.html_url ?: throw RuntimeException("Server repository must have url")
+                    val description = it.description
+                    Repository(id, title, description, url)
                 }
             }
+            .logErrors()
 
 }

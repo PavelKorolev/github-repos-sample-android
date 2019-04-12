@@ -12,11 +12,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.entities.ErrorState
+import xyz.pavelkorolev.githubrepos.entities.Repository
 import xyz.pavelkorolev.githubrepos.helpers.*
 import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
 import xyz.pavelkorolev.githubrepos.modules.base.BaseIntent
 import xyz.pavelkorolev.githubrepos.modules.base.BaseView
 import xyz.pavelkorolev.githubrepos.modules.base.NavigationMode
+import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListRouter
 import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListViewModel
 import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListViewState
 import xyz.pavelkorolev.githubrepos.modules.repositorylist.di.RepositoryListModule
@@ -30,6 +32,10 @@ sealed class RepositoryListIntent : BaseIntent {
         val organization: String
     ) : RepositoryListIntent()
 
+    data class RepositoryClick(
+        val repository: Repository
+    ) : RepositoryListIntent()
+
     object PullToRefresh : RepositoryListIntent()
 }
 
@@ -37,6 +43,9 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
 
     @Inject
     lateinit var schedulerProvider: SchedulerProvider
+
+    @Inject
+    lateinit var router: RepositoryListRouter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -62,7 +71,7 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
         super.findViews()
         recycler = find(R.id.recycler)
         refresher = find<SwipeRefreshLayout>(R.id.refresher).apply {
-            setColorSchemeResources(R.color.colorAccent)
+            setColorSchemeResources(R.color.accent)
         }
         emptyView = find(R.id.empty_view)
         errorTextView = find(R.id.error_text_view)
@@ -79,6 +88,7 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
 
+        viewModel.router = router
         viewModel.stateUpdatesOn(schedulerProvider.main())
             .subscribe(::render)
             .addDisposableTo(disposable)
@@ -92,6 +102,7 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
 
     override fun intents(): Observable<RepositoryListIntent> = Observable.mergeArray(
         Observable.just(RepositoryListIntent.InitialData(organization)),
+        controller.repositoryClicks().map { RepositoryListIntent.RepositoryClick(it) },
         refresher.refreshes().map { RepositoryListIntent.PullToRefresh }
     )
 

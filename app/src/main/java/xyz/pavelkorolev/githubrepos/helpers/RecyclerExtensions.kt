@@ -1,6 +1,5 @@
 package xyz.pavelkorolev.githubrepos.helpers
 
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,8 +28,9 @@ fun RecyclerView.setHorizontalAdapterFromController(controller: EpoxyController)
 }
 
 fun RecyclerView.addDefaultSeparators() {
-    val horizontalDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-    val drawable = ContextCompat.getDrawable(context, R.drawable.lists_divider) ?: return
-    horizontalDecoration.setDrawable(drawable)
-    addItemDecoration(horizontalDecoration)
+    val drawable = context.compatDrawable(R.drawable.list_separator) ?: return
+    val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+        setDrawable(drawable)
+    }
+    addItemDecoration(decoration)
 }

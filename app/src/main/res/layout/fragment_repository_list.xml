@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
-        android:background="@color/backgroundColor">
+        android:background="@color/background">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-        <include layout="@layout/toolbar"/>
+        <include layout="@layout/layout_toolbar"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -40,14 +40,18 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/repository_list_empty"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/text_content"/>
 
             <TextView
                     android:id="@+id/error_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:textColor="@color/text"
+                    android:textSize="@dimen/text_content"/>
 
         </RelativeLayout>
 

@@ -3,13 +3,18 @@ package xyz.pavelkorolev.githubrepos.modules.repositorylist.view
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.core.view.isVisible
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.EpoxyHolder
 import com.airbnb.epoxy.EpoxyModelWithHolder
+import com.jakewharton.rxrelay2.PublishRelay
+import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.entities.Repository
 
 class RepositoryListController : EpoxyController() {
+
+    private val repositoryClicksRelay: PublishRelay<Repository> = PublishRelay.create()
 
     var repositoryList: List<Repository>? = null
 
@@ -17,10 +22,12 @@ class RepositoryListController : EpoxyController() {
         val repositoryList = repositoryList ?: return
         for (repository in repositoryList) {
             RepositoryListItemModel(repository, View.OnClickListener {
-                // TODO repository click listener
+                repositoryClicksRelay.accept(repository)
             }).addTo(this)
         }
     }
+
+    fun repositoryClicks(): Observable<Repository> = repositoryClicksRelay
 
 }
 
@@ -38,6 +45,10 @@ class RepositoryListItemModel(
 
     override fun bind(holder: ViewHolder) {
         holder.textView.text = repository.title
+        holder.descriptionTextView.isVisible = repository.description != null
+        holder.descriptionTextView.text = repository.description
+
+        holder.rootView.setOnClickListener(clickListener)
     }
 
     override fun createNewHolder() = ViewHolder()
@@ -62,11 +73,13 @@ class RepositoryListItemModel(
 
     class ViewHolder : EpoxyHolder() {
         lateinit var textView: TextView
+        lateinit var descriptionTextView: TextView
         lateinit var rootView: View
 
         override fun bindView(view: View) {
             rootView = view
             textView = view.findViewById(R.id.title_text_view)
+            descriptionTextView = view.findViewById(R.id.description_text_view)
         }
     }
 

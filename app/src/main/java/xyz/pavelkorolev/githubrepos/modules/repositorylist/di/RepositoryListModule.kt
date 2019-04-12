@@ -7,11 +7,11 @@ import dagger.Provides
 import dagger.Subcomponent
 import dagger.multibindings.IntoMap
 import xyz.pavelkorolev.githubrepos.di.ViewModelKey
-import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListInteractor
-import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListInteractorImpl
-import xyz.pavelkorolev.githubrepos.modules.repositorylist.RepositoryListViewModel
+import xyz.pavelkorolev.githubrepos.modules.repositorylist.*
 import xyz.pavelkorolev.githubrepos.modules.repositorylist.view.RepositoryListFragment
 import xyz.pavelkorolev.githubrepos.services.ApiService
+import xyz.pavelkorolev.githubrepos.services.Navigator
+import xyz.pavelkorolev.githubrepos.services.NavigatorImpl
 
 @Subcomponent(
     modules = [
@@ -28,6 +28,12 @@ class RepositoryListModule(private val fragment: RepositoryListFragment) {
 
     @Provides
     fun provideInteractor(apiService: ApiService): RepositoryListInteractor = RepositoryListInteractorImpl(apiService)
+
+    @Provides
+    fun provideNavigator(): Navigator = NavigatorImpl(fragment.activity)
+
+    @Provides
+    fun provideRouter(navigator: Navigator): RepositoryListRouter = RepositoryListRouterImpl(navigator)
 
 }
 

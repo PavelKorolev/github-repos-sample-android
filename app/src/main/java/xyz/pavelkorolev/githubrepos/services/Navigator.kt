@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager
 import xyz.pavelkorolev.githubrepos.helpers.hideKeyboard
 import xyz.pavelkorolev.githubrepos.helpers.transaction
 import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
+import xyz.pavelkorolev.githubrepos.modules.contributorlist.view.ContributorListFragment
 import xyz.pavelkorolev.githubrepos.modules.main.MainActivity
 import xyz.pavelkorolev.githubrepos.modules.main.NavigationRoot
 import xyz.pavelkorolev.githubrepos.modules.organization.view.OrganizationFragment
@@ -19,6 +20,7 @@ interface Navigator {
     fun openMain()
     fun rootOrganization()
     fun pushRepositoryList(organization: String)
+    fun pushContributorList(organization: String, repository: String)
 
     fun openUrl(url: String)
 }
@@ -98,6 +100,11 @@ class NavigatorImpl(
 
     override fun pushRepositoryList(organization: String) {
         val fragment = RepositoryListFragment.instance(organization)
+        push(fragment)
+    }
+
+    override fun pushContributorList(organization: String, repository: String) {
+        val fragment = ContributorListFragment.instance(organization, repository)
         push(fragment)
     }
 

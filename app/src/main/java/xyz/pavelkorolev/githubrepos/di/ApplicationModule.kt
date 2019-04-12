@@ -6,6 +6,8 @@ import dagger.Provides
 import xyz.pavelkorolev.githubrepos.application.App
 import xyz.pavelkorolev.githubrepos.modules.base.BaseActivity
 import xyz.pavelkorolev.githubrepos.modules.base.BaseFragment
+import xyz.pavelkorolev.githubrepos.modules.contributorlist.di.ContributorListComponent
+import xyz.pavelkorolev.githubrepos.modules.contributorlist.di.ContributorListModule
 import xyz.pavelkorolev.githubrepos.modules.main.MainComponent
 import xyz.pavelkorolev.githubrepos.modules.main.MainModule
 import xyz.pavelkorolev.githubrepos.modules.organization.di.OrganizationComponent
@@ -34,6 +36,7 @@ interface AppComponent {
     fun plus(module: MainModule): MainComponent
     fun plus(module: RepositoryListModule): RepositoryListComponent
     fun plus(module: OrganizationModule): OrganizationComponent
+    fun plus(module: ContributorListModule): ContributorListComponent
 }
 
 @Module

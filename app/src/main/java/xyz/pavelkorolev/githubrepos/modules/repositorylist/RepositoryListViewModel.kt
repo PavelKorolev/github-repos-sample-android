@@ -6,6 +6,7 @@ import xyz.pavelkorolev.githubrepos.entities.Repository
 import xyz.pavelkorolev.githubrepos.helpers.addDisposableTo
 import xyz.pavelkorolev.githubrepos.helpers.connectInto
 import xyz.pavelkorolev.githubrepos.helpers.mapToLatestFrom
+import xyz.pavelkorolev.githubrepos.helpers.withLatestFrom
 import xyz.pavelkorolev.githubrepos.modules.base.BaseAction
 import xyz.pavelkorolev.githubrepos.modules.base.BaseViewModel
 import xyz.pavelkorolev.githubrepos.modules.base.BaseViewState
@@ -60,8 +61,11 @@ class RepositoryListViewModel @Inject constructor(
             }
 
         intentsConnectable.ofType(RepositoryListIntent.RepositoryClick::class.java)
-            .subscribe {
-                router.openUrl(it.repository.url)
+            .withLatestFrom(startLoadIntents) { repositoryClick, organization ->
+                organization to repositoryClick.repository.title
+            }
+            .subscribe { (organization, repository) ->
+                router.openContributorList(organization, repository)
             }
             .addDisposableTo(disposable)
 

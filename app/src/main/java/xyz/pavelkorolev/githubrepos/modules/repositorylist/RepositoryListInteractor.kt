@@ -2,7 +2,6 @@ package xyz.pavelkorolev.githubrepos.modules.repositorylist
 
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.entities.Repository
-import xyz.pavelkorolev.githubrepos.helpers.logErrors
 import xyz.pavelkorolev.githubrepos.services.ApiService
 
 interface RepositoryListInteractor {
@@ -22,6 +21,5 @@ class RepositoryListInteractorImpl(private val apiService: ApiService) : Reposit
                     Repository(id, title, description, url)
                 }
             }
-            .logErrors()
 
 }

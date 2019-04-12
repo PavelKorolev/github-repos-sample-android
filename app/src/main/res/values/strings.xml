@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Github Repos</string>
-    <string name="repository_list_empty">No repositories found</string>
-    <string name="repository_list">Repositories of %1$s</string>
     <string name="organization">Organization</string>
     <string name="open">Open</string>
+    <string name="repository_list_empty">No repositories found</string>
+    <string name="repository_list">Repositories of %1$s</string>
+    <string name="contributor_list_empty">No contributors found</string>
+    <string name="contributor_list">Contributors of %1$s</string>
 </resources>

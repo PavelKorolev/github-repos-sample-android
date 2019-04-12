@@ -11,12 +11,14 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import xyz.pavelkorolev.githubrepos.entities.server.ServerRepository
+import xyz.pavelkorolev.githubrepos.entities.server.ServerUser
 import java.util.concurrent.TimeUnit
 
 private const val BASE_URL: String = "https://api.github.com"
 
 interface ApiService {
     fun getRepositories(organization: String): Observable<List<ServerRepository>>
+    fun getContributors(organization: String, repository: String): Observable<List<ServerUser>>
 }
 
 class ApiServiceImpl(private val debug: Boolean) : ApiService {
@@ -58,11 +60,20 @@ class ApiServiceImpl(private val debug: Boolean) : ApiService {
     override fun getRepositories(organization: String): Observable<List<ServerRepository>> =
         api.getRepositories(organization)
 
+    override fun getContributors(organization: String, repository: String): Observable<List<ServerUser>> =
+        api.getContributors(organization, repository)
+
 }
 
 interface GithubApi {
 
     @GET("orgs/{org}/repos")
     fun getRepositories(@Path("org") organization: String): Observable<List<ServerRepository>>
+
+    @GET("repos/{owner}/{repo}/contributors")
+    fun getContributors(
+        @Path("owner") organization: String,
+        @Path("repo") repository: String
+    ): Observable<List<ServerUser>>
 
 }

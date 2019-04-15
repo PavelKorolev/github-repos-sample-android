@@ -5,7 +5,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class ImageLoader(val context: Context) {
+class ImageLoader(private val context: Context) {
 
     fun loadCircleAvatar(imageView: ImageView, path: String?) {
         if (path == null) {

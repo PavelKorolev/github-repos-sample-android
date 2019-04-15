@@ -11,9 +11,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import io.reactivex.disposables.CompositeDisposable
 import xyz.pavelkorolev.githubrepos.R
-import xyz.pavelkorolev.githubrepos.utils.compatColor
-import xyz.pavelkorolev.githubrepos.utils.compatDrawable
-import xyz.pavelkorolev.githubrepos.utils.tinted
+import xyz.pavelkorolev.helper.compatColor
+import xyz.pavelkorolev.helper.compatDrawable
+import xyz.pavelkorolev.helper.tinted
 
 enum class NavigationMode {
     MENU,

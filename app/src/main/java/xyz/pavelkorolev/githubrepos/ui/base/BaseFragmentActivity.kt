@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import xyz.pavelkorolev.githubrepos.R
-import xyz.pavelkorolev.githubrepos.utils.transaction
+import xyz.pavelkorolev.helper.transaction
 
 abstract class BaseFragmentActivity : BaseActivity() {
 

@@ -2,8 +2,8 @@ package xyz.pavelkorolev.githubrepos.services
 
 import xyz.pavelkorolev.githubrepos.models.Repository
 import xyz.pavelkorolev.githubrepos.models.User
-import xyz.pavelkorolev.githubrepos.models.server.ServerRepository
-import xyz.pavelkorolev.githubrepos.models.server.ServerUser
+import xyz.pavelkorolev.githubrepos.network.models.ServerRepository
+import xyz.pavelkorolev.githubrepos.network.models.ServerUser
 
 abstract class Mapper<T1, T2> {
     abstract fun map(value: T1): T2

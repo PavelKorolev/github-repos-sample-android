@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import xyz.pavelkorolev.githubrepos.BuildConfig
 import xyz.pavelkorolev.githubrepos.application.App
+import xyz.pavelkorolev.githubrepos.network.ApiService
+import xyz.pavelkorolev.githubrepos.network.ApiServiceImpl
 import xyz.pavelkorolev.githubrepos.services.*
 import javax.inject.Singleton
 

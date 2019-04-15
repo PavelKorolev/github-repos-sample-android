@@ -12,7 +12,7 @@ import com.jakewharton.rxbinding2.widget.textChanges
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.BuildConfig
 import xyz.pavelkorolev.githubrepos.R
-import xyz.pavelkorolev.githubrepos.utils.*
+import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import xyz.pavelkorolev.githubrepos.ui.base.BaseFragment
 import xyz.pavelkorolev.githubrepos.ui.base.BaseIntent
 import xyz.pavelkorolev.githubrepos.ui.base.BaseView
@@ -20,7 +20,11 @@ import xyz.pavelkorolev.githubrepos.ui.organization.OrganizationRouter
 import xyz.pavelkorolev.githubrepos.ui.organization.OrganizationViewModel
 import xyz.pavelkorolev.githubrepos.ui.organization.OrganizationViewState
 import xyz.pavelkorolev.githubrepos.ui.organization.di.OrganizationModule
-import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
+import xyz.pavelkorolev.githubrepos.utils.addDisposableTo
+import xyz.pavelkorolev.githubrepos.utils.app
+import xyz.pavelkorolev.helper.find
+import xyz.pavelkorolev.helper.hideKeyboard
+import xyz.pavelkorolev.helper.instanceOf
 import javax.inject.Inject
 
 sealed class OrganizationIntent : BaseIntent {

@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import xyz.pavelkorolev.githubrepos.R
-import xyz.pavelkorolev.githubrepos.utils.app
-import xyz.pavelkorolev.githubrepos.ui.base.BaseActivity
 import xyz.pavelkorolev.githubrepos.services.Navigator
+import xyz.pavelkorolev.githubrepos.ui.base.BaseActivity
+import xyz.pavelkorolev.githubrepos.utils.app
 import javax.inject.Inject
 
 interface NavigationRoot {

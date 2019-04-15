@@ -1,4 +1,4 @@
-package xyz.pavelkorolev.githubrepos.services
+package xyz.pavelkorolev.githubrepos.network
 
 import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
@@ -10,8 +10,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
-import xyz.pavelkorolev.githubrepos.models.server.ServerRepository
-import xyz.pavelkorolev.githubrepos.models.server.ServerUser
+import xyz.pavelkorolev.githubrepos.network.models.ServerRepository
+import xyz.pavelkorolev.githubrepos.network.models.ServerUser
 import java.util.concurrent.TimeUnit
 
 private const val BASE_URL: String = "https://api.github.com"

@@ -1,4 +1,4 @@
-package xyz.pavelkorolev.githubrepos.models.server
+package xyz.pavelkorolev.githubrepos.network.models
 
 data class ServerUser(
     val id: Long?,

@@ -4,15 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.FragmentManager
-import xyz.pavelkorolev.githubrepos.utils.hideKeyboard
-import xyz.pavelkorolev.githubrepos.utils.transaction
 import xyz.pavelkorolev.githubrepos.ui.base.BaseFragment
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.view.ContributorListFragment
 import xyz.pavelkorolev.githubrepos.ui.main.MainActivity
 import xyz.pavelkorolev.githubrepos.ui.main.NavigationRoot
 import xyz.pavelkorolev.githubrepos.ui.organization.view.OrganizationFragment
 import xyz.pavelkorolev.githubrepos.ui.repositorylist.view.RepositoryListFragment
-
+import xyz.pavelkorolev.helper.hideKeyboard
+import xyz.pavelkorolev.helper.transaction
 
 interface Navigator {
     fun back(force: Boolean = false)

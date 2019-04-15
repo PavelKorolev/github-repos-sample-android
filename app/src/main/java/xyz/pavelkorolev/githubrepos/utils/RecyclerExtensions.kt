@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyController
 import xyz.pavelkorolev.githubrepos.R
+import xyz.pavelkorolev.helper.compatDrawable
 
 class CustomItemAnimator : DefaultItemAnimator()
 

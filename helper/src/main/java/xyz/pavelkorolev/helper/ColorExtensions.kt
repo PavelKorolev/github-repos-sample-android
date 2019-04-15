@@ -1,4 +1,4 @@
-package xyz.pavelkorolev.githubrepos.utils
+package xyz.pavelkorolev.helper
 
 import android.graphics.Color
 import java.util.*

@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.Subcomponent
 import dagger.multibindings.IntoMap
 import xyz.pavelkorolev.githubrepos.di.ViewModelKey
-import xyz.pavelkorolev.githubrepos.services.ApiService
+import xyz.pavelkorolev.githubrepos.network.ApiService
 import xyz.pavelkorolev.githubrepos.services.Navigator
 import xyz.pavelkorolev.githubrepos.services.NavigatorImpl
 import xyz.pavelkorolev.githubrepos.services.ServerRepositoryMapper

@@ -12,7 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.models.ErrorState
-import xyz.pavelkorolev.githubrepos.utils.*
+import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import xyz.pavelkorolev.githubrepos.ui.base.BaseFragment
 import xyz.pavelkorolev.githubrepos.ui.base.BaseIntent
 import xyz.pavelkorolev.githubrepos.ui.base.BaseView
@@ -20,7 +20,10 @@ import xyz.pavelkorolev.githubrepos.ui.base.NavigationMode
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.ContributorListViewModel
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.ContributorListViewState
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.di.ContributorListModule
-import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
+import xyz.pavelkorolev.githubrepos.utils.*
+import xyz.pavelkorolev.helper.find
+import xyz.pavelkorolev.helper.getArgumentString
+import xyz.pavelkorolev.helper.instanceOf
 import javax.inject.Inject
 
 private const val ORGANIZATION_KEY = "organization"

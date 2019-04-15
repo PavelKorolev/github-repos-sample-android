@@ -4,14 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion androidCompileSdkVersion
     defaultConfig {
         applicationId "xyz.pavelkorolev.githubrepos"
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "0.1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
+        versionCode appVersionCode
+        versionName appVersionName
     }
     signingConfigs {
         release {
@@ -33,10 +32,6 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard/app.pro',
-                    'proguard/okhttp3.pro',
-                    'proguard/retrofit2.pro'
         }
     }
     compileOptions {
@@ -46,33 +41,29 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
-    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
-    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation project(":helper")
+    implementation project(':network')
 
-    implementation 'com.jakewharton.timber:timber:4.7.0'
+    implementation libraries.kotlin
+    implementation libraries.appCompat
+    implementation libraries.androidxCoreKtx
+    implementation libraries.androidxLifecycle
 
-    kapt 'com.google.dagger:dagger-compiler:2.16'
-    implementation 'com.google.dagger:dagger:2.16'
-    implementation 'com.google.dagger:dagger-android-support:2.16'
+    implementation libraries.material
 
-    implementation "io.reactivex.rxjava2:rxjava:2.2.4"
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0'
-    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
+    implementation libraries.timber
 
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    kapt libraries.daggerCompiler
+    implementation libraries.dagger
+    implementation libraries.daggerAndroid
 
-    implementation 'com.squareup.moshi:moshi-kotlin:1.5.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-moshi:2.3.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation libraries.rxJava
+    implementation libraries.rxAndroid
+    implementation libraries.rxBinding
+    implementation libraries.rxRelay
 
-    implementation 'com.airbnb.android:epoxy:3.1.0'
+    implementation libraries.epoxy
 
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation libraries.glide
+    kapt libraries.glideCompiler
 }

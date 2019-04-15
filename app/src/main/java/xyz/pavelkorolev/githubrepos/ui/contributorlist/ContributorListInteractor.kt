@@ -2,7 +2,7 @@ package xyz.pavelkorolev.githubrepos.ui.contributorlist
 
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.models.User
-import xyz.pavelkorolev.githubrepos.services.ApiService
+import xyz.pavelkorolev.githubrepos.network.ApiService
 import xyz.pavelkorolev.githubrepos.services.ServerUserMapper
 
 interface ContributorListInteractor {

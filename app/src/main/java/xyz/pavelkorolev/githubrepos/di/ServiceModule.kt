@@ -22,4 +22,12 @@ class ServiceModule(val app: App) {
     @Singleton
     fun provideImageLoader(): ImageLoader = ImageLoader(app)
 
+    @Provides
+    @Singleton
+    fun provideServerUserMapper(): ServerUserMapper = ServerUserMapper()
+
+    @Provides
+    @Singleton
+    fun provideServerRepositoryMapper(): ServerRepositoryMapper = ServerRepositoryMapper()
+
 }

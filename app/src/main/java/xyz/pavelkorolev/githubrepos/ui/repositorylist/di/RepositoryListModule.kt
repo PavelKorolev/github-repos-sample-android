@@ -7,12 +7,13 @@ import dagger.Provides
 import dagger.Subcomponent
 import dagger.multibindings.IntoMap
 import xyz.pavelkorolev.githubrepos.di.ViewModelKey
-import xyz.pavelkorolev.githubrepos.ui.repositorylist.*
-import xyz.pavelkorolev.githubrepos.ui.repositorylist.view.RepositoryListController
-import xyz.pavelkorolev.githubrepos.ui.repositorylist.view.RepositoryListFragment
 import xyz.pavelkorolev.githubrepos.services.ApiService
 import xyz.pavelkorolev.githubrepos.services.Navigator
 import xyz.pavelkorolev.githubrepos.services.NavigatorImpl
+import xyz.pavelkorolev.githubrepos.services.ServerRepositoryMapper
+import xyz.pavelkorolev.githubrepos.ui.repositorylist.*
+import xyz.pavelkorolev.githubrepos.ui.repositorylist.view.RepositoryListController
+import xyz.pavelkorolev.githubrepos.ui.repositorylist.view.RepositoryListFragment
 
 @Subcomponent(
     modules = [
@@ -31,7 +32,10 @@ class RepositoryListModule(private val fragment: RepositoryListFragment) {
     fun provideController(): RepositoryListController = RepositoryListController()
 
     @Provides
-    fun provideInteractor(apiService: ApiService): RepositoryListInteractor = RepositoryListInteractorImpl(apiService)
+    fun provideInteractor(
+        apiService: ApiService,
+        repositoryMapper: ServerRepositoryMapper
+    ): RepositoryListInteractor = RepositoryListInteractorImpl(apiService, repositoryMapper)
 
     @Provides
     fun provideNavigator(): Navigator = NavigatorImpl(fragment.activity)

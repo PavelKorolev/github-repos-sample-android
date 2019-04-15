@@ -7,13 +7,14 @@ import dagger.Provides
 import dagger.Subcomponent
 import dagger.multibindings.IntoMap
 import xyz.pavelkorolev.githubrepos.di.ViewModelKey
+import xyz.pavelkorolev.githubrepos.services.ApiService
+import xyz.pavelkorolev.githubrepos.services.ImageLoader
+import xyz.pavelkorolev.githubrepos.services.ServerUserMapper
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.ContributorListInteractor
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.ContributorListInteractorImpl
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.ContributorListViewModel
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.view.ContributorListController
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.view.ContributorListFragment
-import xyz.pavelkorolev.githubrepos.services.ApiService
-import xyz.pavelkorolev.githubrepos.services.ImageLoader
 
 @Subcomponent(
     modules = [
@@ -29,7 +30,10 @@ interface ContributorListComponent {
 class ContributorListModule(private val fragment: ContributorListFragment) {
 
     @Provides
-    fun provideInteractor(apiService: ApiService): ContributorListInteractor = ContributorListInteractorImpl(apiService)
+    fun provideInteractor(
+        apiService: ApiService,
+        userMapper: ServerUserMapper
+    ): ContributorListInteractor = ContributorListInteractorImpl(apiService, userMapper)
 
     @Provides
     fun provideController(imageLoader: ImageLoader): ContributorListController = ContributorListController(imageLoader)

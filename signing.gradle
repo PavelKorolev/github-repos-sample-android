@@ -1,0 +1,19 @@
+class SigningConfig {
+    def keystoreFile
+    def password
+    def alias
+    def aliasPassword
+}
+
+ext.loadSigningConfig = {
+    def keystorePropertiesFile = rootProject.file('keystore.properties')
+    if (!keystorePropertiesFile.exists()) return null
+    def properties = new Properties()
+    properties.load(keystorePropertiesFile.newDataInputStream())
+    return new SigningConfig(
+            keystoreFile: file(properties.getProperty("keystore.path")),
+            password: properties.getProperty("keystore.password"),
+            alias: properties.getProperty("keystore.alias"),
+            aliasPassword: properties.getProperty("keystore.alias.password")
+    )
+}

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: '../signing.gradle'
 
 android {
     compileSdkVersion androidCompileSdkVersion
@@ -14,15 +15,11 @@ android {
     }
     signingConfigs {
         release {
-            def keystorePropertiesFile = rootProject.file('keystore.properties')
-            if (keystorePropertiesFile.exists()) {
-                Properties properties = new Properties()
-                properties.load(keystorePropertiesFile.newDataInputStream())
-                storeFile file(properties.getProperty("keystore.path"))
-                storePassword properties.getProperty("keystore.password")
-                keyAlias properties.getProperty("keystore.alias")
-                keyPassword properties.getProperty("keystore.alias.password")
-            }
+            def signingConfig = loadSigningConfig()
+            storeFile signingConfig.keystoreFile
+            storePassword signingConfig.password
+            keyAlias signingConfig.alias
+            keyPassword signingConfig.aliasPassword
         }
     }
     buildTypes {

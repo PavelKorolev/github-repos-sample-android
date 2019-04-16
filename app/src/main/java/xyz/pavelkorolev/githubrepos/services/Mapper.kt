@@ -13,12 +13,14 @@ abstract class Mapper<T1, T2> {
     fun reverseMap(values: List<T2>): List<T1> = values.map { reverseMap(it) }
 }
 
+class MappingException(override val message: String?) : RuntimeException(message)
+
 class ServerRepositoryMapper : Mapper<ServerRepository, Repository>() {
 
     override fun map(value: ServerRepository): Repository {
-        val id = value.id ?: throw RuntimeException("Server repository must have id")
-        val title = value.name ?: throw RuntimeException("Server repository must have title")
-        val url = value.html_url ?: throw RuntimeException("Server repository must have url")
+        val id = value.id ?: throw MappingException("Server repository must have id")
+        val title = value.name ?: throw MappingException("Server repository must have title")
+        val url = value.html_url ?: throw MappingException("Server repository must have url")
         val description = value.description
         return Repository(id, title, description, url)
     }
@@ -32,8 +34,8 @@ class ServerRepositoryMapper : Mapper<ServerRepository, Repository>() {
 class ServerUserMapper : Mapper<ServerUser, User>() {
 
     override fun map(value: ServerUser): User {
-        val id = value.id ?: throw RuntimeException("Server user must have id")
-        val login = value.login ?: throw RuntimeException("Server user must have login")
+        val id = value.id ?: throw MappingException("Server user must have id")
+        val login = value.login ?: throw MappingException("Server user must have login")
         val avatarUrl = value.avatar_url
         return User(id, login, avatarUrl)
     }

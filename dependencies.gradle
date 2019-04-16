@@ -9,10 +9,13 @@ ext {
             androidMinSdkVersion = 21,
             androidTargetSdkVersion = 28,
             androidCompileSdkVersion = 28,
+            // JUnit
+            jUnitVersion = '2.0.2',
     ]
     gradlePlugins = [
-            buildTools: "com.android.tools.build:gradle:3.3.2",
-            kotlin    : "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
+            buildTools   : "com.android.tools.build:gradle:3.3.2",
+            kotlin       : "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
+            androidJUnit5: "de.mannodermaus.gradle.plugins:android-junit5:1.2.0.0",
     ]
     libraries = [
             kotlin           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
@@ -39,5 +42,11 @@ ext {
             retrofit      : "com.squareup.retrofit2:retrofit:2.4.0",
             retrofitMoshi : "com.squareup.retrofit2:converter-moshi:2.3.0",
             retrofitRxJava: "com.squareup.retrofit2:adapter-rxjava2:2.4.0",
+    ]
+    testLibraries = [
+            spek           : "org.spekframework.spek2:spek-dsl-jvm:$jUnitVersion",
+            spekRunnerJunit: "org.spekframework.spek2:spek-runner-junit5:$jUnitVersion",
+            kotlinReflect  : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+            kotlinAssert   : "org.jetbrains.kotlin:kotlin-test:$kotlinVersion",
     ]
 }

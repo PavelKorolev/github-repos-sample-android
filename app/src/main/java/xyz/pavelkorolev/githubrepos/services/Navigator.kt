@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.FragmentManager
+import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.ui.base.BaseFragment
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.view.ContributorListFragment
 import xyz.pavelkorolev.githubrepos.ui.main.MainActivity
@@ -40,7 +41,7 @@ class NavigatorImpl(
         hideKeyboard()
         popAll()
         fragmentManager?.transaction {
-            replace(xyz.pavelkorolev.githubrepos.R.id.fragment_container, fragment)
+            replace(R.id.fragment_container, fragment)
             addToBackStack(null)
         }
     }
@@ -49,12 +50,12 @@ class NavigatorImpl(
         hideKeyboard()
         fragmentManager?.transaction {
             setCustomAnimations(
-                xyz.pavelkorolev.githubrepos.R.anim.enter_from_right,
-                xyz.pavelkorolev.githubrepos.R.anim.exit_to_left,
-                xyz.pavelkorolev.githubrepos.R.anim.enter_from_left,
-                xyz.pavelkorolev.githubrepos.R.anim.exit_to_right
+                R.anim.enter_from_right,
+                R.anim.exit_to_left,
+                R.anim.enter_from_left,
+                R.anim.exit_to_right
             )
-            add(xyz.pavelkorolev.githubrepos.R.id.fragment_container, fragment)
+            add(R.id.fragment_container, fragment)
             addToBackStack(null)
         }
     }

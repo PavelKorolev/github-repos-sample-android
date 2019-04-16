@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "de.mannodermaus.android-junit5"
 apply from: '../signing.gradle'
 
 android {
@@ -25,6 +26,7 @@ android {
     buildTypes {
         debug {
             versionNameSuffix "-debug"
+            testCoverageEnabled = true
         }
         release {
             signingConfig signingConfigs.release
@@ -34,6 +36,16 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+    }
+
+    testOptions {
+        junitPlatform {
+            filters {
+                engines {
+                    include 'spek2'
+                }
+            }
+        }
     }
 }
 
@@ -63,4 +75,9 @@ dependencies {
 
     implementation libraries.glide
     kapt libraries.glideCompiler
+
+    testImplementation testLibraries.spek
+    testRuntimeOnly testLibraries.spekRunnerJunit
+    testRuntimeOnly testLibraries.kotlinReflect
+    testImplementation testLibraries.kotlinAssert
 }

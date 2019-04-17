@@ -48,5 +48,6 @@ ext {
             spekRunnerJunit: "org.spekframework.spek2:spek-runner-junit5:$jUnitVersion",
             kotlinReflect  : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
             kotlinAssert   : "org.jetbrains.kotlin:kotlin-test:$kotlinVersion",
+            mockitoKotlin  : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1",
     ]
 }

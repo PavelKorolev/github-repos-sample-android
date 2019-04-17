@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.R
-import xyz.pavelkorolev.githubrepos.models.ErrorState
 import xyz.pavelkorolev.githubrepos.models.Repository
 import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import xyz.pavelkorolev.githubrepos.ui.base.BaseFragment
@@ -112,13 +111,8 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
 
     override fun render(state: RepositoryListViewState) {
         emptyView.isVisible = state.repositoryList?.isEmpty() ?: false
-        when (state.errorState) {
-            is ErrorState.Message -> {
-                errorTextView.text = state.errorState.text
-                errorTextView.isVisible = true
-            }
-            is ErrorState.None -> errorTextView.isVisible = false
-        }
+        errorTextView.isVisible = state.errorMessage != null
+        errorTextView.text = state.errorMessage
         refresher.isRefreshing = state.isLoading
 
         controller.repositoryList = state.repositoryList

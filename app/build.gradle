@@ -80,4 +80,5 @@ dependencies {
     testRuntimeOnly testLibraries.spekRunnerJunit
     testRuntimeOnly testLibraries.kotlinReflect
     testImplementation testLibraries.kotlinAssert
+    testImplementation testLibraries.mockitoKotlin
 }

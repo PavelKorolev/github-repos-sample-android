@@ -1,26 +1,25 @@
 package xyz.pavelkorolev.githubrepos.ui.repositorylist
 
 import io.reactivex.Observable
-import xyz.pavelkorolev.githubrepos.models.ErrorState
 import xyz.pavelkorolev.githubrepos.models.Repository
-import xyz.pavelkorolev.githubrepos.utils.*
+import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import xyz.pavelkorolev.githubrepos.ui.base.BaseAction
 import xyz.pavelkorolev.githubrepos.ui.base.BaseViewModel
 import xyz.pavelkorolev.githubrepos.ui.base.BaseViewState
 import xyz.pavelkorolev.githubrepos.ui.repositorylist.view.RepositoryListIntent
-import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
+import xyz.pavelkorolev.githubrepos.utils.*
 import javax.inject.Inject
 
 data class RepositoryListViewState(
     val repositoryList: List<Repository>? = null,
     val isLoading: Boolean = false,
-    val errorState: ErrorState = ErrorState.None
+    val errorMessage: String? = null
 ) : BaseViewState
 
 sealed class RepositoryListAction : BaseAction {
     data class UpdateRepositoryList(val repositoryList: List<Repository>) : RepositoryListAction()
     data class UpdateLoading(val isLoading: Boolean) : RepositoryListAction()
-    data class UpdateErrorState(val errorState: ErrorState) : RepositoryListAction()
+    data class UpdateErrorState(val errorMessage: String) : RepositoryListAction()
 }
 
 class RepositoryListViewModel @Inject constructor(
@@ -37,6 +36,7 @@ class RepositoryListViewModel @Inject constructor(
 
         val initialData = intentsConnectable.ofType(RepositoryListIntent.InitialData::class.java)
             .take(1)
+            .share()
 
         val pullToRefreshes = intentsConnectable.ofType(RepositoryListIntent.PullToRefresh::class.java)
             .map { Unit }
@@ -53,7 +53,7 @@ class RepositoryListViewModel @Inject constructor(
                 interactor.loadRepositoryList(organization)
                     .subscribeOn(schedulerProvider.io())
                     .map<RepositoryListAction> { RepositoryListAction.UpdateRepositoryList(it) }
-                    .onErrorReturn { RepositoryListAction.UpdateErrorState(ErrorState.Message("Loading Error")) }
+                    .onErrorReturn { RepositoryListAction.UpdateErrorState("Loading Error") }
                     .startWith(RepositoryListAction.UpdateLoading(true))
             }
 
@@ -83,13 +83,14 @@ class RepositoryListViewModel @Inject constructor(
             is RepositoryListAction.UpdateRepositoryList -> state.copy(
                 repositoryList = action.repositoryList,
                 isLoading = false,
-                errorState = ErrorState.None
+                errorMessage = null
             )
             is RepositoryListAction.UpdateLoading -> state.copy(
                 isLoading = action.isLoading
             )
             is RepositoryListAction.UpdateErrorState -> state.copy(
-                errorState = action.errorState,
+                repositoryList = null,
+                errorMessage = action.errorMessage,
                 isLoading = false
             )
         }

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.Observable
 import xyz.pavelkorolev.githubrepos.R
-import xyz.pavelkorolev.githubrepos.models.ErrorState
 import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import xyz.pavelkorolev.githubrepos.ui.base.BaseFragment
 import xyz.pavelkorolev.githubrepos.ui.base.BaseIntent
@@ -105,13 +104,8 @@ class ContributorListFragment : BaseFragment(), BaseView<ContributorListIntent, 
 
     override fun render(state: ContributorListViewState) {
         emptyView.isVisible = state.contributorList?.isEmpty() ?: false
-        when (state.errorState) {
-            is ErrorState.Message -> {
-                errorTextView.text = state.errorState.text
-                errorTextView.isVisible = true
-            }
-            is ErrorState.None -> errorTextView.isVisible = false
-        }
+        errorTextView.isVisible = state.errorMessage != null
+        errorTextView.text = state.errorMessage
         refresher.isRefreshing = state.isLoading
 
         controller.contributorList = state.contributorList

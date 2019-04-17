@@ -38,6 +38,7 @@ class ApiServiceImpl(
         }
 
         builder
+            .addInterceptor(NoContentInterceptor())
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
             .build()
@@ -70,6 +71,14 @@ class ApiServiceImpl(
 
     override fun getContributors(organization: String, repository: String): Observable<List<ServerUser>> =
         api.getContributors(organization, repository)
+            .onErrorResumeNext { throwable: Throwable ->
+                throwable.printStackTrace()
+                if (throwable is GithubNoContentException) {
+                    Observable.just(emptyList())
+                } else {
+                    Observable.error(throwable)
+                }
+            }
             .mapApiException()
 
 }

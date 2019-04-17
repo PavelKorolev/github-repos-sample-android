@@ -50,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:visibility="gone"
+                    android:text="@string/error_loading"
                     android:textColor="@color/text"
                     android:textSize="@dimen/text_content"/>
 

@@ -104,8 +104,7 @@ class ContributorListFragment : BaseFragment(), BaseView<ContributorListIntent, 
 
     override fun render(state: ContributorListViewState) {
         emptyView.isVisible = state.contributorList?.isEmpty() ?: false
-        errorTextView.isVisible = state.errorMessage != null
-        errorTextView.text = state.errorMessage
+        errorTextView.isVisible = state.isError
         refresher.isRefreshing = state.isLoading
 
         controller.contributorList = state.contributorList

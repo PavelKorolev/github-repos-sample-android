@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import xyz.pavelkorolev.githubrepos.BuildConfig
 import xyz.pavelkorolev.githubrepos.application.App
+import xyz.pavelkorolev.githubrepos.network.ApiExceptionMapper
+import xyz.pavelkorolev.githubrepos.network.ApiExceptionMapperImpl
 import xyz.pavelkorolev.githubrepos.network.ApiService
 import xyz.pavelkorolev.githubrepos.network.ApiServiceImpl
 import xyz.pavelkorolev.githubrepos.services.*
@@ -14,7 +16,8 @@ class ServiceModule(val app: App) {
 
     @Provides
     @Singleton
-    fun provideApiService(): ApiService = ApiServiceImpl(BuildConfig.DEBUG)
+    fun provideApiService(apiExceptionMapper: ApiExceptionMapper): ApiService =
+        ApiServiceImpl(BuildConfig.DEBUG, apiExceptionMapper)
 
     @Provides
     @Singleton
@@ -31,5 +34,9 @@ class ServiceModule(val app: App) {
     @Provides
     @Singleton
     fun provideServerRepositoryMapper(): ServerRepositoryMapper = ServerRepositoryMapper()
+
+    @Provides
+    @Singleton
+    fun provideApiExceptionMapper(): ApiExceptionMapper = ApiExceptionMapperImpl()
 
 }

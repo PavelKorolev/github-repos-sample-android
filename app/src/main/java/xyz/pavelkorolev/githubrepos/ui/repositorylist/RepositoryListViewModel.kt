@@ -13,13 +13,13 @@ import javax.inject.Inject
 data class RepositoryListViewState(
     val repositoryList: List<Repository>? = null,
     val isLoading: Boolean = false,
-    val errorMessage: String? = null
+    val isError: Boolean = false
 ) : BaseViewState
 
 sealed class RepositoryListAction : BaseAction {
     data class UpdateRepositoryList(val repositoryList: List<Repository>) : RepositoryListAction()
-    data class UpdateLoading(val isLoading: Boolean) : RepositoryListAction()
-    data class UpdateErrorState(val errorMessage: String) : RepositoryListAction()
+    object ShowLoading : RepositoryListAction()
+    object ShowError : RepositoryListAction()
 }
 
 class RepositoryListViewModel @Inject constructor(
@@ -32,7 +32,9 @@ class RepositoryListViewModel @Inject constructor(
     private val initialState = RepositoryListViewState()
 
     init {
-        val intentsConnectable = intentRelay.publish()
+        val intentsConnectable = intentRelay
+            .logNext()
+            .publish()
 
         val initialData = intentsConnectable.ofType(RepositoryListIntent.InitialData::class.java)
             .take(1)
@@ -51,10 +53,14 @@ class RepositoryListViewModel @Inject constructor(
             )
             .switchMap { organization ->
                 interactor.loadRepositoryList(organization)
+                    .map { result ->
+                        when (result) {
+                            is RepositoryListLoadResult.Success -> RepositoryListAction.UpdateRepositoryList(result.repositoryList)
+                            is RepositoryListLoadResult.Error -> RepositoryListAction.ShowError
+                            is RepositoryListLoadResult.Loading -> RepositoryListAction.ShowLoading
+                        }
+                    }
                     .subscribeOn(schedulerProvider.io())
-                    .map<RepositoryListAction> { RepositoryListAction.UpdateRepositoryList(it) }
-                    .onErrorReturn { RepositoryListAction.UpdateErrorState("Loading Error") }
-                    .startWith(RepositoryListAction.UpdateLoading(true))
             }
 
         intentsConnectable.ofType(RepositoryListIntent.RepositoryClick::class.java)
@@ -83,14 +89,14 @@ class RepositoryListViewModel @Inject constructor(
             is RepositoryListAction.UpdateRepositoryList -> state.copy(
                 repositoryList = action.repositoryList,
                 isLoading = false,
-                errorMessage = null
+                isError = false
             )
-            is RepositoryListAction.UpdateLoading -> state.copy(
-                isLoading = action.isLoading
+            is RepositoryListAction.ShowLoading -> state.copy(
+                isLoading = true
             )
-            is RepositoryListAction.UpdateErrorState -> state.copy(
+            is RepositoryListAction.ShowError -> state.copy(
                 repositoryList = null,
-                errorMessage = action.errorMessage,
+                isError = true,
                 isLoading = false
             )
         }

@@ -21,7 +21,10 @@ interface ApiService {
     fun getContributors(organization: String, repository: String): Observable<List<ServerUser>>
 }
 
-class ApiServiceImpl(private val debug: Boolean) : ApiService {
+class ApiServiceImpl(
+    private val debug: Boolean,
+    private val apiExceptionMapper: ApiExceptionMapper
+) : ApiService {
 
     private val client: OkHttpClient by lazy {
         var builder = OkHttpClient.Builder()
@@ -57,11 +60,17 @@ class ApiServiceImpl(private val debug: Boolean) : ApiService {
         retrofit.create(GithubApi::class.java)
     }
 
+    private fun <T> Observable<T>.mapApiException(): Observable<T> = onErrorResumeNext { throwable: Throwable ->
+        Observable.error(apiExceptionMapper.map(throwable))
+    }
+
     override fun getRepositories(organization: String): Observable<List<ServerRepository>> =
         api.getRepositories(organization)
+            .mapApiException()
 
     override fun getContributors(organization: String, repository: String): Observable<List<ServerUser>> =
         api.getContributors(organization, repository)
+            .mapApiException()
 
 }
 

@@ -111,8 +111,7 @@ class RepositoryListFragment : BaseFragment(), BaseView<RepositoryListIntent, Re
 
     override fun render(state: RepositoryListViewState) {
         emptyView.isVisible = state.repositoryList?.isEmpty() ?: false
-        errorTextView.isVisible = state.errorMessage != null
-        errorTextView.text = state.errorMessage
+        errorTextView.isVisible = state.isError
         refresher.isRefreshing = state.isLoading
 
         controller.repositoryList = state.repositoryList

@@ -6,4 +6,5 @@
     <string name="repository_list">Repositories of %1$s</string>
     <string name="contributor_list_empty">No contributors found</string>
     <string name="contributor_list">Contributors of %1$s</string>
+    <string name="error_loading">Loading error</string>
 </resources>

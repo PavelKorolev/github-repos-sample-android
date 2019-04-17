@@ -15,13 +15,13 @@ import javax.inject.Inject
 data class ContributorListViewState(
     val contributorList: List<User>? = null,
     val isLoading: Boolean = false,
-    val errorMessage: String? = null
+    val isError: Boolean = false
 ) : BaseViewState
 
 sealed class ContributorListAction : BaseAction {
     data class UpdateContributorList(val contributorList: List<User>) : ContributorListAction()
-    data class UpdateLoading(val isLoading: Boolean) : ContributorListAction()
-    data class UpdateErrorState(val errorMessage: String) : ContributorListAction()
+    object ShowLoading : ContributorListAction()
+    object ShowError : ContributorListAction()
 }
 
 class ContributorListViewModel @Inject constructor(
@@ -49,10 +49,14 @@ class ContributorListViewModel @Inject constructor(
             )
             .switchMap { (organization, repository) ->
                 interactor.loadContributorList(organization, repository)
+                    .map { result ->
+                        when (result) {
+                            is ContributorListLoadResult.Success -> ContributorListAction.UpdateContributorList(result.contributorList)
+                            is ContributorListLoadResult.Error -> ContributorListAction.ShowError
+                            is ContributorListLoadResult.Loading -> ContributorListAction.ShowLoading
+                        }
+                    }
                     .subscribeOn(schedulerProvider.io())
-                    .map<ContributorListAction> { ContributorListAction.UpdateContributorList(it) }
-                    .onErrorReturn { ContributorListAction.UpdateErrorState("Loading Error") }
-                    .startWith(ContributorListAction.UpdateLoading(true))
             }
 
         Observable
@@ -71,14 +75,14 @@ class ContributorListViewModel @Inject constructor(
             is ContributorListAction.UpdateContributorList -> state.copy(
                 contributorList = action.contributorList,
                 isLoading = false,
-                errorMessage = null
+                isError = false
             )
-            is ContributorListAction.UpdateLoading -> state.copy(
-                isLoading = action.isLoading
+            is ContributorListAction.ShowLoading -> state.copy(
+                isLoading = true
             )
-            is ContributorListAction.UpdateErrorState -> state.copy(
+            is ContributorListAction.ShowError -> state.copy(
                 contributorList = null,
-                errorMessage = action.errorMessage,
+                isError = true,
                 isLoading = false
             )
         }

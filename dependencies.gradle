@@ -13,12 +13,12 @@ ext {
             jUnitVersion = '2.0.2',
     ]
     gradlePlugins = [
-            buildTools   : "com.android.tools.build:gradle:3.3.2",
+            buildTools   : "com.android.tools.build:gradle:3.4.0",
             kotlin       : "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
             androidJUnit5: "de.mannodermaus.gradle.plugins:android-junit5:1.2.0.0",
     ]
     libraries = [
-            kotlin           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+            kotlin           : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
             rxJava           : "io.reactivex.rxjava2:rxjava:2.2.4",
             appCompat        : "androidx.appcompat:appcompat:1.1.0-alpha04",
             androidxCoreKtx  : "androidx.core:core-ktx:1.1.0-alpha05",
@@ -44,10 +44,15 @@ ext {
             retrofitRxJava: "com.squareup.retrofit2:adapter-rxjava2:2.4.0",
     ]
     testLibraries = [
-            spek           : "org.spekframework.spek2:spek-dsl-jvm:$jUnitVersion",
-            spekRunnerJunit: "org.spekframework.spek2:spek-runner-junit5:$jUnitVersion",
-            kotlinReflect  : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
-            kotlinAssert   : "org.jetbrains.kotlin:kotlin-test:$kotlinVersion",
-            mockitoKotlin  : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1",
+            spek               : "org.spekframework.spek2:spek-dsl-jvm:$jUnitVersion",
+            spekRunnerJunit    : "org.spekframework.spek2:spek-runner-junit5:$jUnitVersion",
+            kotlinReflect      : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+            kotlinAssert       : "org.jetbrains.kotlin:kotlin-test:$kotlinVersion",
+            mockitoKotlin      : "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1",
+            androidXRunner     : "androidx.test:runner:1.1.1",
+            androidXRules      : "androidx.test:rules:1.1.1",
+            espresso           : "androidx.test.espresso:espresso-core:3.1.1",
+            androidJUnit5      : "de.mannodermaus.junit5:android-test-core:1.0.0",
+            androidJUnit5Runner: "de.mannodermaus.junit5:android-test-runner:1.0.0",
     ]
 }

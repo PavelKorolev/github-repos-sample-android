@@ -22,7 +22,21 @@ object RepositoryListInteractorSpec : Spek({
             describe("on success") {
                 lateinit var repositoryLoadResults: TestObserver<RepositoryListLoadResult>
                 beforeEach {
-                    whenever(apiService.getRepositories(any())).thenReturn(Observable.just(mockServerRepositories()))
+                    val mockServerRepositories = listOf(
+                        ServerRepository(
+                            1,
+                            "spek",
+                            "https://github.com/spekframework/spek",
+                            "A specification framework for Kotlin"
+                        ),
+                        ServerRepository(
+                            2,
+                            "kotlin",
+                            "https://github.com/JetBrains/kotlin",
+                            "The Kotlin Programming Language"
+                        )
+                    )
+                    whenever(apiService.getRepositories(any())).thenReturn(Observable.just(mockServerRepositories))
                     repositoryLoadResults = interactor.loadRepositoryList("google").test()
                 }
                 afterEach {
@@ -59,18 +73,3 @@ object RepositoryListInteractorSpec : Spek({
         }
     }
 })
-
-private fun mockServerRepositories(): List<ServerRepository> = listOf(
-    ServerRepository(
-        1,
-        "spek",
-        "https://github.com/spekframework/spek",
-        "A specification framework for Kotlin"
-    ),
-    ServerRepository(
-        2,
-        "kotlin",
-        "https://github.com/JetBrains/kotlin",
-        "The Kotlin Programming Language"
-    )
-)

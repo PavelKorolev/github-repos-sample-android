@@ -22,7 +22,24 @@ object ContributorListInteractorImplSpec : Spek({
             describe("on success") {
                 lateinit var contributorListLoadResults: TestObserver<ContributorListLoadResult>
                 beforeEach {
-                    whenever(apiService.getContributors(any(), any())).thenReturn(Observable.just(mockServerUsers()))
+                    val mockServerUsers = listOf(
+                        ServerUser(
+                            1,
+                            "PavelKorolev",
+                            "https://avatars2.githubusercontent.com/u/4147260?s=460&v=4",
+                            "https://github.com/PavelKorolev",
+                            "pk@example.com"
+                        ),
+                        ServerUser(
+                            2,
+                            "JakeWharton",
+                            "https://avatars1.githubusercontent.com/u/66577?s=460&v=4",
+                            "https://github.com/JakeWharton",
+                            "jw@example.com"
+                        )
+                    )
+
+                    whenever(apiService.getContributors(any(), any())).thenReturn(Observable.just(mockServerUsers))
                     contributorListLoadResults = interactor.loadContributorList("google", "dagger").test()
                 }
                 afterEach {
@@ -59,20 +76,3 @@ object ContributorListInteractorImplSpec : Spek({
         }
     }
 })
-
-private fun mockServerUsers(): List<ServerUser> = listOf(
-    ServerUser(
-        1,
-        "PavelKorolev",
-        "https://avatars2.githubusercontent.com/u/4147260?s=460&v=4",
-        "https://github.com/PavelKorolev",
-        "pk@example.com"
-    ),
-    ServerUser(
-        2,
-        "JakeWharton",
-        "https://avatars1.githubusercontent.com/u/66577?s=460&v=4",
-        "https://github.com/JakeWharton",
-        "jw@example.com"
-    )
-)

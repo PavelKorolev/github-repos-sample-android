@@ -37,7 +37,7 @@ abstract class BaseViewModel<I : BaseIntent, A : BaseAction, S : BaseViewState> 
         .observeOn(scheduler)
         .startWith(currentState())
 
-    open fun processIntents(intents: Observable<I>) {
+    fun processIntents(intents: Observable<I>) {
         uiLifetime.clear()
         intents
             .subscribe(intentRelay)

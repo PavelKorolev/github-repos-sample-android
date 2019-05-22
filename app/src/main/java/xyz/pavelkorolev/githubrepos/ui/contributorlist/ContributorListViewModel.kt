@@ -10,7 +10,6 @@ import xyz.pavelkorolev.githubrepos.ui.contributorlist.view.ContributorListInten
 import xyz.pavelkorolev.githubrepos.utils.addDisposableTo
 import xyz.pavelkorolev.githubrepos.utils.connectInto
 import xyz.pavelkorolev.githubrepos.utils.mapToLatestFrom
-import javax.inject.Inject
 
 data class ContributorListViewState(
     val contributorList: List<User>? = null,
@@ -24,7 +23,7 @@ sealed class ContributorListAction : BaseAction {
     object ShowError : ContributorListAction()
 }
 
-class ContributorListViewModel @Inject constructor(
+class ContributorListViewModel(
     private val interactor: ContributorListInteractor,
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel<ContributorListIntent, ContributorListAction, ContributorListViewState>() {

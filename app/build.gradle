@@ -79,10 +79,9 @@ dependencies {
     implementation libraries.material
 
     implementation libraries.timber
-
-    kapt libraries.daggerCompiler
-    implementation libraries.dagger
-    implementation libraries.daggerAndroid
+    implementation libraries.koin
+    implementation libraries.koinAndroidViewModel
+    implementation libraries.koinAndroidScope
 
     implementation libraries.rxJava
     implementation libraries.rxAndroid

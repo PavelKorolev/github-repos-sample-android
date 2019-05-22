@@ -1,15 +1,14 @@
 package xyz.pavelkorolev.githubrepos.ui.organization
 
 import io.reactivex.Observable
-import xyz.pavelkorolev.githubrepos.utils.addDisposableTo
-import xyz.pavelkorolev.githubrepos.utils.buttonThrottle
-import xyz.pavelkorolev.githubrepos.utils.connectInto
-import xyz.pavelkorolev.githubrepos.utils.mapToLatestFrom
 import xyz.pavelkorolev.githubrepos.ui.base.BaseAction
 import xyz.pavelkorolev.githubrepos.ui.base.BaseViewModel
 import xyz.pavelkorolev.githubrepos.ui.base.BaseViewState
 import xyz.pavelkorolev.githubrepos.ui.organization.view.OrganizationIntent
-import javax.inject.Inject
+import xyz.pavelkorolev.githubrepos.utils.addDisposableTo
+import xyz.pavelkorolev.githubrepos.utils.buttonThrottle
+import xyz.pavelkorolev.githubrepos.utils.connectInto
+import xyz.pavelkorolev.githubrepos.utils.mapToLatestFrom
 
 data class OrganizationViewState(
     val isButtonEnabled: Boolean = false
@@ -19,8 +18,7 @@ sealed class OrganizationAction : BaseAction {
     data class UpdateButtonEnabled(val isEnabled: Boolean) : OrganizationAction()
 }
 
-class OrganizationViewModel @Inject constructor() :
-    BaseViewModel<OrganizationIntent, OrganizationAction, OrganizationViewState>() {
+class OrganizationViewModel : BaseViewModel<OrganizationIntent, OrganizationAction, OrganizationViewState>() {
 
     lateinit var router: OrganizationRouter
 
@@ -34,7 +32,7 @@ class OrganizationViewModel @Inject constructor() :
             .publish()
 
         val buttonEnableActions = organizationTextChanges
-            .map { !it.isEmpty() }
+            .map { it.isNotEmpty() }
             .map { OrganizationAction.UpdateButtonEnabled(it) }
 
         intentsConnectable.ofType(OrganizationIntent.Open::class.java)

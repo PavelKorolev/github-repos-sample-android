@@ -5,11 +5,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.Observable
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 import xyz.pavelkorolev.githubrepos.ui.base.BaseFragment
@@ -18,12 +18,14 @@ import xyz.pavelkorolev.githubrepos.ui.base.BaseView
 import xyz.pavelkorolev.githubrepos.ui.base.NavigationMode
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.ContributorListViewModel
 import xyz.pavelkorolev.githubrepos.ui.contributorlist.ContributorListViewState
-import xyz.pavelkorolev.githubrepos.ui.contributorlist.di.ContributorListModule
-import xyz.pavelkorolev.githubrepos.utils.*
+import xyz.pavelkorolev.githubrepos.ui.contributorlist.di.injectContributorListModule
+import xyz.pavelkorolev.githubrepos.utils.addDefaultSeparators
+import xyz.pavelkorolev.githubrepos.utils.addDisposableTo
+import xyz.pavelkorolev.githubrepos.utils.refreshes
+import xyz.pavelkorolev.githubrepos.utils.setAdapterFromController
 import xyz.pavelkorolev.helper.find
 import xyz.pavelkorolev.helper.getArgumentString
 import xyz.pavelkorolev.helper.instanceOf
-import javax.inject.Inject
 
 private const val ORGANIZATION_KEY = "organization"
 private const val REPOSITORY_KEY = "repository"
@@ -39,27 +41,14 @@ sealed class ContributorListIntent : BaseIntent {
 
 class ContributorListFragment : BaseFragment(), BaseView<ContributorListIntent, ContributorListViewState> {
 
-    @Inject
-    lateinit var schedulerProvider: SchedulerProvider
-
-    @Inject
-    lateinit var controller: ContributorListController
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val viewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory)[ContributorListViewModel::class.java]
-    }
+    private val schedulerProvider: SchedulerProvider by inject()
+    private val controller: ContributorListController by inject()
+    private val contributorListViewModel: ContributorListViewModel by viewModel()
 
     private lateinit var recycler: RecyclerView
     private lateinit var refresher: SwipeRefreshLayout
     private lateinit var emptyView: View
     private lateinit var errorTextView: TextView
-
-    private val component by lazy {
-        app.component.plus(ContributorListModule(this))
-    }
 
     private lateinit var organization: String
     private lateinit var repository: String
@@ -84,12 +73,12 @@ class ContributorListFragment : BaseFragment(), BaseView<ContributorListIntent, 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        component.inject(this)
+        injectContributorListModule()
 
-        viewModel.stateUpdatesOn(schedulerProvider.main())
+        contributorListViewModel.stateUpdatesOn(schedulerProvider.main())
             .subscribe(::render)
             .addDisposableTo(disposable)
-        viewModel.processIntents(intents())
+        contributorListViewModel.processIntents(intents())
 
         setupToolbar(getString(R.string.contributor_list, repository), NavigationMode.BACK)
 

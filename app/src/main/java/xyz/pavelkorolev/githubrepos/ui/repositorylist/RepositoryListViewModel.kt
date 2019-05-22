@@ -8,7 +8,6 @@ import xyz.pavelkorolev.githubrepos.ui.base.BaseViewModel
 import xyz.pavelkorolev.githubrepos.ui.base.BaseViewState
 import xyz.pavelkorolev.githubrepos.ui.repositorylist.view.RepositoryListIntent
 import xyz.pavelkorolev.githubrepos.utils.*
-import javax.inject.Inject
 
 data class RepositoryListViewState(
     val repositoryList: List<Repository>? = null,
@@ -22,7 +21,7 @@ sealed class RepositoryListAction : BaseAction {
     object ShowError : RepositoryListAction()
 }
 
-class RepositoryListViewModel @Inject constructor(
+class RepositoryListViewModel(
     private val interactor: RepositoryListInteractor,
     private val schedulerProvider: SchedulerProvider
 ) : BaseViewModel<RepositoryListIntent, RepositoryListAction, RepositoryListViewState>() {

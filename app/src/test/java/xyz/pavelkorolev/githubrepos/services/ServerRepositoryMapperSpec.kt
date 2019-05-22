@@ -1,4 +1,4 @@
-package xyz.pavelkorolev.githubrepos.services;
+package xyz.pavelkorolev.githubrepos.services
 
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe

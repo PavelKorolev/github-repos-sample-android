@@ -1,24 +1,14 @@
 package xyz.pavelkorolev.githubrepos.ui.splash
 
-import android.content.Context
-import dagger.Module
-import dagger.Provides
-import dagger.Subcomponent
+import android.app.Activity
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import xyz.pavelkorolev.githubrepos.application.Router
 import xyz.pavelkorolev.githubrepos.application.RouterInput
 
-@Subcomponent(modules = [SplashModule::class])
-interface SplashComponent {
-    fun inject(splashActivity: SplashActivity)
+val splashModule = module {
+    factory<RouterInput> { (activity: Activity) -> Router(activity) }
 }
 
-@Module
-class SplashModule(private val splashActivity: SplashActivity) {
-
-    @Provides
-    fun providesContext(): Context = splashActivity
-
-    @Provides
-    fun providesRouter(): RouterInput = Router(splashActivity)
-
-}
+val loadSplashModule by lazy { loadKoinModules(splashModule) }
+fun injectSplashModule() = loadSplashModule

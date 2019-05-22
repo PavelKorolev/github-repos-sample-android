@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentManager
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.services.Navigator
 import xyz.pavelkorolev.githubrepos.ui.base.BaseActivity
-import xyz.pavelkorolev.githubrepos.utils.app
-import javax.inject.Inject
 
 interface NavigationRoot {
     val contentFragmentManager: FragmentManager
@@ -18,20 +18,15 @@ interface NavigationRoot {
 
 class MainActivity : BaseActivity(), NavigationRoot {
 
-    private val component by lazy {
-        app.component.plus(MainModule(this))
-    }
-
-    @Inject
-    lateinit var navigator: Navigator
+    private val navigator: Navigator by inject { parametersOf(this) }
 
     override val contentFragmentManager: FragmentManager
         get() = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        component.inject(this)
         setContentView(R.layout.activity_fragment)
+        injectMainModule()
 
         if (savedInstanceState == null) {
             navigator.rootOrganization()

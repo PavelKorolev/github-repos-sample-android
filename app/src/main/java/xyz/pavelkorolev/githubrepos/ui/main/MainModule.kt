@@ -1,26 +1,14 @@
 package xyz.pavelkorolev.githubrepos.ui.main
 
 import android.content.Context
-import dagger.Module
-import dagger.Provides
-import dagger.Subcomponent
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import xyz.pavelkorolev.githubrepos.services.Navigator
 import xyz.pavelkorolev.githubrepos.services.NavigatorImpl
 
-@Subcomponent(modules = [
-    MainModule::class
-])
-interface MainComponent {
-    fun inject(mainActivity: MainActivity)
+val mainModule = module {
+    factory<Navigator> { (context: Context) -> NavigatorImpl(context) }
 }
 
-@Module
-class MainModule(private val mainActivity: MainActivity) {
-
-    @Provides
-    fun providesContext(): Context = mainActivity
-
-    @Provides
-    fun provideNavigator(): Navigator = NavigatorImpl(mainActivity)
-
-}
+val loadMainModule by lazy { loadKoinModules(mainModule) }
+fun injectMainModule() = loadMainModule

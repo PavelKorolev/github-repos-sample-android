@@ -1,14 +1,9 @@
 package xyz.pavelkorolev.githubrepos.di
 
-import dagger.Module
-import dagger.Provides
+import org.koin.dsl.module
 import xyz.pavelkorolev.githubrepos.services.AppSchedulerProvider
 import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
 
-@Module
-class SchedulerModule {
-
-    @Provides
-    fun provideSchedulerProvider(): SchedulerProvider = AppSchedulerProvider()
-
+val schedulerModule = module {
+    single<SchedulerProvider> { AppSchedulerProvider() }
 }

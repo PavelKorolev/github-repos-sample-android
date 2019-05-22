@@ -2,22 +2,18 @@ package xyz.pavelkorolev.githubrepos.ui.splash
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import org.koin.android.ext.android.inject
+import org.koin.core.context.loadKoinModules
+import org.koin.core.parameter.parametersOf
 import xyz.pavelkorolev.githubrepos.application.RouterInput
-import xyz.pavelkorolev.githubrepos.utils.app
-import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var router: RouterInput
-
-    private val component by lazy {
-        app.component.plus(SplashModule(this))
-    }
+    private val router: RouterInput by inject { parametersOf(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        component.inject(this)
+        injectSplashModule()
         router.start()
     }
 

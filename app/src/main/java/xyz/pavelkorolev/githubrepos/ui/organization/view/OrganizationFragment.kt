@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.editorActions
 import com.jakewharton.rxbinding2.widget.textChanges
 import io.reactivex.Observable
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import xyz.pavelkorolev.githubrepos.BuildConfig
 import xyz.pavelkorolev.githubrepos.R
 import xyz.pavelkorolev.githubrepos.services.SchedulerProvider
@@ -19,13 +20,11 @@ import xyz.pavelkorolev.githubrepos.ui.base.BaseView
 import xyz.pavelkorolev.githubrepos.ui.organization.OrganizationRouter
 import xyz.pavelkorolev.githubrepos.ui.organization.OrganizationViewModel
 import xyz.pavelkorolev.githubrepos.ui.organization.OrganizationViewState
-import xyz.pavelkorolev.githubrepos.ui.organization.di.OrganizationModule
+import xyz.pavelkorolev.githubrepos.ui.organization.di.injectOrganizationModule
 import xyz.pavelkorolev.githubrepos.utils.addDisposableTo
-import xyz.pavelkorolev.githubrepos.utils.app
 import xyz.pavelkorolev.helper.find
 import xyz.pavelkorolev.helper.hideKeyboard
 import xyz.pavelkorolev.helper.instanceOf
-import javax.inject.Inject
 
 sealed class OrganizationIntent : BaseIntent {
     data class OrganizationTextChanges(val text: String) : OrganizationIntent()
@@ -34,22 +33,9 @@ sealed class OrganizationIntent : BaseIntent {
 
 class OrganizationFragment : BaseFragment(), BaseView<OrganizationIntent, OrganizationViewState> {
 
-    @Inject
-    lateinit var schedulerProvider: SchedulerProvider
-
-    @Inject
-    lateinit var router: OrganizationRouter
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val viewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory)[OrganizationViewModel::class.java]
-    }
-
-    private val component by lazy {
-        app.component.plus(OrganizationModule(this))
-    }
+    private val schedulerProvider: SchedulerProvider by inject()
+    private val router: OrganizationRouter by inject { parametersOf(this.activity) }
+    private val organizationViewModel: OrganizationViewModel by viewModel()
 
     private lateinit var button: Button
     private lateinit var editText: EditText
@@ -64,13 +50,13 @@ class OrganizationFragment : BaseFragment(), BaseView<OrganizationIntent, Organi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        component.inject(this)
+        injectOrganizationModule()
 
-        viewModel.router = router
-        viewModel.stateUpdatesOn(schedulerProvider.main())
+        organizationViewModel.router = router
+        organizationViewModel.stateUpdatesOn(schedulerProvider.main())
             .subscribe(::render)
             .addDisposableTo(disposable)
-        viewModel.processIntents(intents())
+        organizationViewModel.processIntents(intents())
 
         if (BuildConfig.DEBUG) {
             editText.setText("google")

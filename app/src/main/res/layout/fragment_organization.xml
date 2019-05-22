@@ -4,7 +4,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
-            android:background="@color/background">
+            android:background="@color/color_background">
 
     <RelativeLayout
             android:layout_width="match_parent"
@@ -17,7 +17,7 @@
 
             <ImageView
                     android:id="@+id/background_view"
-                    android:background="@color/primary_dark"
+                    android:background="#222"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 

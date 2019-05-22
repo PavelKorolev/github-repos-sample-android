@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
-        android:background="@color/background">
+        android:background="@color/color_background">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -41,7 +41,7 @@
                     android:layout_centerInParent="true"
                     android:text="@string/contributor_list_empty"
                     android:visibility="gone"
-                    android:textColor="@color/text"
+                    android:textColor="@color/color_on_background"
                     android:textSize="@dimen/text_content"/>
 
             <TextView
@@ -51,7 +51,7 @@
                     android:layout_centerInParent="true"
                     android:visibility="gone"
                     android:text="@string/error_loading"
-                    android:textColor="@color/text"
+                    android:textColor="@color/color_on_background"
                     android:textSize="@dimen/text_content"/>
 
         </RelativeLayout>

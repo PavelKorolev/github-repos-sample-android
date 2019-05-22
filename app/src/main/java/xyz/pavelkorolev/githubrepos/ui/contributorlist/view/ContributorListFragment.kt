@@ -68,7 +68,7 @@ class ContributorListFragment : BaseFragment(), BaseView<ContributorListIntent, 
         super.findViews()
         recycler = find(R.id.recycler)
         refresher = find<SwipeRefreshLayout>(R.id.refresher).apply {
-            setColorSchemeResources(R.color.accent)
+            setColorSchemeResources(R.color.color_primary)
         }
         emptyView = find(R.id.empty_view)
         errorTextView = find(R.id.error_text_view)
